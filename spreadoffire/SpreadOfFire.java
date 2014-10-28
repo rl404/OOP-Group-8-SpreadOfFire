@@ -3,7 +3,7 @@ package spreadoffire;
 import java.util.Scanner;
 
 /**
- * The main class of project
+ * The main class of project from MVC pattern
  * 
  * @author OOPgroup8
  * @version 2014.10.14
