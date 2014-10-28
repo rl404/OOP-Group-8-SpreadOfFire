@@ -15,7 +15,8 @@ public class SpreadOfFire {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TUI();
+        JFrame myGUI=new Controller();
+        //TUI();
     }
     
     public static void TUI(){
