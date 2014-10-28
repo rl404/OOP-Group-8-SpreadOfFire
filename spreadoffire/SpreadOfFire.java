@@ -3,8 +3,10 @@ package spreadoffire;
 import java.util.Scanner;
 
 /**
- *
+ * The main class of project
+ * 
  * @author OOPgroup8
+ * @version 2014.10.14
  */
 public class SpreadOfFire {
     
@@ -12,7 +14,7 @@ public class SpreadOfFire {
     /**
      * @param args the command line arguments
      */
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         TUI();
     }
     
