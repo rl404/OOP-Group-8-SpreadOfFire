@@ -11,8 +11,9 @@ import java.awt.Color;
  */
 public class Model {
     
+    private View observer;
     public int width, height;
-    public double probBurning, probTree;
+    public int probCatch, probBurning, probTree;
     private Cell cell[][];
     private boolean cellCheck[][];
 
@@ -20,7 +21,7 @@ public class Model {
      * Constructor create the grid
      */
     public Model() {
-        this(30,30,0.5,1);
+        this(30,30,50,0,100);
     }
     
     /**
@@ -29,30 +30,40 @@ public class Model {
      * @param height
      */
     public Model(int width, int height){
-        this(width,height,0.5,1);
+        this(width,height,50,0,100);
     }
     
     /**
      * Constructor create the grid
      * @param width
-     * @param height 
+     * @param height
+     * @param probC
      * @param probB
      * @param probT
      */
-    public Model(int width, int height, double probB, double probT) {
+    public Model(int width, int height,int probC, int probB, int probT) {
         this.width = width;
         this.height = height;
+        this.probCatch = probC;
         this.probBurning = probB;
         this.probTree = probT;
         //Reset the field
         resetGrid();
+    }    
+    
+    /**
+     * Set the burning probability of the forest
+     * @param probCatch
+     */
+    public void setProbCatch(int probC) {
+        this.probCatch = probC;
     }
     
     /**
-     * Set the burning probability
+     * Set the burning probability each tree
      * @param probBurning
      */
-    public void setProbBurning(double probB) {
+    public void setProbBurning(int probB) {
         this.probBurning = probB;
     }
     
@@ -60,7 +71,7 @@ public class Model {
      * Set the density of forest
      * @param probT
      */
-    public void setProbTree(double probT) {
+    public void setProbTree(int probT) {
         this.probTree = probT;
     }
     
@@ -116,14 +127,16 @@ public class Model {
         // 0 - empty - on boundary
         // 1 - tree - inside
         // 2 - burning tree - in middle
-        cell = new Cell[width+2][height+2];        
-        cellCheck=new boolean[width+2][height+2]; resetCheck();
+        cell = new Cell[width][height];        
+        cellCheck=new boolean[width][height]; resetCheck();
         for(int i = 0; i < cell.length; i++){
             for(int j=0; j<cell[0].length; j++){
                 if(i==0 || j==0 || i==cell.length-1 || j==cell[0].length-1 ){
                     cell[i][j] = new Cell(Cell.YELLOW);
                 }else{
-                    cell[i][j] = new Cell(Cell.GREEN);
+                     if(random(probTree)){
+                        cell[i][j] = new Cell(Cell.GREEN);
+                    }else{cell[i][j] = new Cell(Cell.YELLOW);}
                 }
             } 
         }
@@ -152,16 +165,16 @@ public class Model {
      * @param y
      */
     public void spread(String s,int x, int y){               
-        if(s.equals("north")  && get(x,y-1) == Cell.GREEN && random(probBurning)==true){       
+        if(s.equals("north")  && get(x,y-1) == Cell.GREEN && random(probCatch)==true){       
                 cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;
         }
-        if(s.equals("south") && get(x,y+1) == Cell.GREEN && random(probBurning)==true){  
+        if(s.equals("south") && get(x,y+1) == Cell.GREEN && random(probCatch)==true){  
                 cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;  
         }
-        if(s.equals("west") && get(x-1,y) == Cell.GREEN && random(probBurning)==true){
+        if(s.equals("west") && get(x-1,y) == Cell.GREEN && random(probCatch)==true){
                 cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;      
         }
-        if(s.equals("east") && get(x+1,y) == Cell.GREEN && random(probBurning)==true){
+        if(s.equals("east") && get(x+1,y) == Cell.GREEN && random(probCatch)==true){
                 cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true;              
         }  
         update();   
@@ -206,7 +219,7 @@ public class Model {
      * @return boolean of random number
      */
      public boolean random(double a){
-        double rnd = Math.random();
+        double rnd = Math.random()*100;
         if(rnd<a)
             return true;
         return false;
