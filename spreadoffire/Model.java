@@ -1,10 +1,13 @@
 package spreadoffire;
+
 import java.util.*;
 import java.awt.Color;
 
 /**
- *
+ * The model class of project from MVC pattern
+ * 
  * @author OOPgroup8
+ * @version 2014.10.14
  */
 public class Model {
     
@@ -128,7 +131,7 @@ public class Model {
         cell[width/2][height/2] = new Cell(Cell.RED);
         
         //Update the field
-        //update();
+        update();
     }
         
     /**
@@ -164,11 +167,11 @@ public class Model {
         update();   
     }
     
-       /**
+    /**
      * Search for the fire 
      */
     public void checkBurn(){
-        //update();
+        update();
         try {
             Thread.sleep(100);
         } catch(InterruptedException ex) {
@@ -187,6 +190,7 @@ public class Model {
          
      /**
      * Check if there is no burning finish (no 2 anymore)
+     * @return true if there is still burning tree in th forest
      */
     public boolean finish(){
         for(int i=0;i<cell.length;i++){
@@ -222,5 +226,22 @@ public class Model {
            System.out.println();
         }
     } 
+    
+    /**
+     * Add the observer for this model
+     * @param view
+     */
+    public void addObserver(View view){
+        observer=view;
+        update();
+    }
+
+    /**
+     * Update this field
+     */
+    public void update(){
+        if(observer!=null)observer.update(cell);    
+    }
 }
+
 
