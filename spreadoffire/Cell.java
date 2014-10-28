@@ -5,8 +5,8 @@ import java.awt.Color;
 /**
  * The cell class that contain the properties of cell
  * 
- * @author ...
- * @version 2014.04.11
+ * @author OOPgroup8
+ * @version 2014.10.14
  */
 
 public class Cell {
