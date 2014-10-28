@@ -1,4 +1,4 @@
-package testspreadoffire;
+package spreadoffire;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,12 +13,12 @@ import javax.swing.event.ChangeListener;
  * @version 2014.10.28
  */
 public class Controller extends JFrame{
-    ModelClass myModel;
+    Model myModel;
     View myView;
     Thread startThread;
     JButton startButton,stopButton,moveButton;
-    JLabel probability,ratio,empty,size,delay;
-    JSlider probabilityScale,sizeScale;
+    JLabel probC,ratio,empty,size,delay;
+    JSlider probCScale,sizeScale;
 
     /**
      * Create the GUI of project
@@ -32,7 +32,7 @@ public class Controller extends JFrame{
         setLayout(new GridLayout(1, 2));
         
         //Create the model, the main process of project
-        myModel=new ModelClass();
+        myModel=new Model();
         
         //Create the view, the output of main process of project
         int boxWidth=(int)((400)/myModel.width);
@@ -82,7 +82,7 @@ public class Controller extends JFrame{
                 controller1.add(startButton);
                 
                 //Create and Add the stopButton
-                stopButton=new JButton("Stop");
+                stopButton=new JButton("Pause");
                 stopButton.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e){
@@ -105,7 +105,8 @@ public class Controller extends JFrame{
                             startThread.stop();
                         }
                         //Reset the main process
-                        myModel.fieldReset();
+                        myModel.resetGrid();
+                        myModel.resetCheck();
                     }
                 });
                 controller1.add(resetButton);
@@ -123,11 +124,11 @@ public class Controller extends JFrame{
                 //Properties of the label panel
                 {
                     //Add the name label
-                    controller2_1.add(new JLabel("Probability : "));
+                    controller2_1.add(new JLabel("Probability of burning in forest : "));
                     
                     //Add the value label
-                    probability=new JLabel(""+myModel.probability);
-                    controller2_1.add(probability);
+                    probC =new JLabel(""+myModel.probCatch);
+                    controller2_1.add(probC);
                 }
                 
                 //Create and add the controller panel
@@ -135,19 +136,19 @@ public class Controller extends JFrame{
                 controller2.add(controller2_2);
                 //Properties of the controller panel
                 {
-                    //Create and Add the Similarity Slider from 0-100
-                    probabilityScale = new JSlider(JSlider.HORIZONTAL,0, 100, 50);
-                    probabilityScale.addChangeListener(new ChangeListener() {
+                    //Create and Add the Similarity Slider from 0-1
+                    probCScale = new JSlider(JSlider.HORIZONTAL,0, 100, 50);
+                    probCScale.addChangeListener(new ChangeListener() {
                         @Override
                         public void stateChanged(ChangeEvent e) {
                             //Set the probability
                             int newProbability=((JSlider)(e.getSource())).getValue();
-                            myModel.setProbability(newProbability);
+                            myModel.setProbCatch(newProbability);
                             //Change the label
-                            probability.setText(""+myModel.probability);
+                            probC.setText(""+myModel.probCatch);
                         }
                     });
-                    controller2_2.add(probabilityScale);
+                    controller2_2.add(probCScale);
                 }
             }
             
