@@ -16,9 +16,9 @@ public class Controller extends JFrame{
     Model myModel;
     View myView;
     Thread startThread;
-    JButton startButton,stopButton,moveButton;
-    JLabel probC,ratio,empty,size,delay;
-    JSlider probCScale,sizeScale;
+    JButton startButton,stopButton,resetButton,moveButton;
+    JLabel probC,probT,probB,ratio,empty,size,delay,step;
+    JSlider probCScale,probTScale,probBScale,sizeScale;
 
     /**
      * Create the GUI of project
@@ -58,8 +58,7 @@ public class Controller extends JFrame{
             JPanel controller1=new JPanel();
             controller.add(controller1);
             //Properties of 1st row
-            {
-                           
+            {                           
                 //Create and Add the startButton
                 startButton=new JButton("Start");
                 startButton.addActionListener(new ActionListener(){
@@ -96,7 +95,7 @@ public class Controller extends JFrame{
                 controller1.add(stopButton);
                 
                 //Create and Add the resetButton
-                JButton resetButton=new JButton("Reset");
+                resetButton=new JButton("Reset");
                 resetButton.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e){
@@ -124,10 +123,10 @@ public class Controller extends JFrame{
                 //Properties of the label panel
                 {
                     //Add the name label
-                    controller2_1.add(new JLabel("Probability of burning in forest : "));
+                    controller2_1.add(new JLabel("ProbCatch : "));
                     
                     //Add the value label
-                    probC =new JLabel(""+myModel.probCatch);
+                    probC =new JLabel(myModel.probCatch+"%");
                     controller2_1.add(probC);
                 }
                 
@@ -136,7 +135,7 @@ public class Controller extends JFrame{
                 controller2.add(controller2_2);
                 //Properties of the controller panel
                 {
-                    //Create and Add the Similarity Slider from 0-1
+                    //Create and Add the Similarity Slider from 0-100
                     probCScale = new JSlider(JSlider.HORIZONTAL,0, 100, 50);
                     probCScale.addChangeListener(new ChangeListener() {
                         @Override
@@ -145,14 +144,14 @@ public class Controller extends JFrame{
                             int newProbability=((JSlider)(e.getSource())).getValue();
                             myModel.setProbCatch(newProbability);
                             //Change the label
-                            probC.setText(""+myModel.probCatch);
+                            probC.setText(myModel.probCatch+"%");
                         }
                     });
                     controller2_2.add(probCScale);
                 }
             }
             
-            //Create and Add the 3rd row to controller panel - The Size
+            //Create and Add the 3rd row to controller panel - The probability
             JPanel controller3=new JPanel();
             controller3.setLayout(new GridLayout(1,2));
             controller.add(controller3);
@@ -161,18 +160,98 @@ public class Controller extends JFrame{
                 //Create and add the label panel
                 JPanel controller3_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
                 controller3.add(controller3_1);
+                //Properties of the label panel
                 {
                     //Add the name label
-                    controller3_1.add(new JLabel("Size : "));
-                
+                    controller3_1.add(new JLabel("ProbTree : "));
+                    
                     //Add the value label
-                    size=new JLabel(""+myModel.width+"x"+myModel.height);
-                    controller3_1.add(size);
+                    probT =new JLabel(myModel.probTree+"%");
+                    controller3_1.add(probT);
                 }
                 
                 //Create and add the controller panel
                 JPanel controller3_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                controller3.add(controller3_2);
+                controller3.add(controller3_2); 
+                //Properties of the controller panel
+                {
+                    //Create and Add the Similarity Slider from 0-100
+                    probTScale = new JSlider(JSlider.HORIZONTAL,0, 100, 100);
+                    probTScale.addChangeListener(new ChangeListener() {
+                        @Override
+                        public void stateChanged(ChangeEvent e) {
+                            //Set the probability
+                            int newProbability=((JSlider)(e.getSource())).getValue();
+                            myModel.setProbTree(newProbability);
+                            //Change the label
+                            probT.setText(myModel.probTree+"%");
+                        }
+                    });
+                    controller3_2.add(probTScale);
+                }
+            }
+            
+            //Create and Add the 4th row to controller panel - The probability
+            JPanel controller4=new JPanel();
+            controller4.setLayout(new GridLayout(1,2));
+            controller.add(controller4);
+            //Properties of 4th row
+            {
+                //Create and add the label panel
+                JPanel controller4_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
+                controller4.add(controller4_1);
+                //Properties of the label panel
+                {
+                    //Add the name label
+                    controller4_1.add(new JLabel("ProbBurning : "));
+                    
+                    //Add the value label
+                    probB =new JLabel(myModel.probBurning+"%");
+                    controller4_1.add(probB);
+                }
+                
+                //Create and add the controller panel
+                JPanel controller4_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
+                controller4.add(controller4_2); 
+                //Properties of the controller panel
+                {
+                    //Create and Add the Similarity Slider from 0-100
+                    probBScale = new JSlider(JSlider.HORIZONTAL,0, 100,0);
+                    probBScale.addChangeListener(new ChangeListener() {
+                        @Override
+                        public void stateChanged(ChangeEvent e) {
+                            //Set the probability
+                            int newProbability=((JSlider)(e.getSource())).getValue();
+                            myModel.setProbBurning(newProbability);
+                            //Change the label
+                            probB.setText(myModel.probBurning+"%");
+                        }
+                    });
+                    controller4_2.add(probBScale);
+                }
+            }
+            
+            //Create and Add the 5th row to controller panel - The Size
+            JPanel controller5=new JPanel();
+            controller5.setLayout(new GridLayout(1,2));
+            controller.add(controller5);
+            //Properties of 5th row
+            {
+                //Create and add the label panel
+                JPanel controller5_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
+                controller5.add(controller5_1);
+                {
+                    //Add the name label
+                    controller5_1.add(new JLabel("Size : "));
+                
+                    //Add the value label
+                    size=new JLabel(""+myModel.width+"x"+myModel.height);
+                    controller5_1.add(size);
+                }
+                
+                //Create and add the controller panel
+                JPanel controller5_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
+                controller5.add(controller5_2);
                 //Properties of the controller panel
                 {
                     //Create and Add the Size Slider from 10x10 - 50x50
@@ -194,10 +273,9 @@ public class Controller extends JFrame{
                             }
                         }
                     });
-                    controller3_2.add(sizeScale);
+                    controller5_2.add(sizeScale);
                 }
-            }
-            
+            }            
         }
         //Set the frame Visible
         setVisible(true);
