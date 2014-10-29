@@ -7,7 +7,7 @@ import javax.swing.JFrame;
  * The main class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.10.14
+ * @version 2014.10.29
  */
 public class SpreadOfFire {
     
@@ -25,17 +25,13 @@ public class SpreadOfFire {
         System.out.print("Width = ");     Scanner a = new Scanner(System.in);     int width = a.nextInt(); 
         System.out.print("Height = ");     Scanner b = new Scanner(System.in);     int height = b.nextInt(); 
         
-        System.out.println("Set the probability of a tree in a cell catching fire : (0-1) ");
+        System.out.println("Set the probability of a tree in a cell catching fire : (0-100) ");
         Scanner c = new Scanner(System.in);     int probC = c.nextInt();
         
-        System.out.println("Set the density of forest : (0-1) ");
-        Scanner d = new Scanner(System.in);    int probT = d.nextInt();
+        //System.out.println("Set the density of forest : (0-1) ");
+        //Scanner d = new Scanner(System.in);    int probT = d.nextInt();        
         
-        //System.out.println("Set the starting point : ") ;              
-        //System.out.print("X = ");     Scanner e = new Scanner(System.in);     int x2 = d.nextInt(); 
-        //System.out.print("Y = ");     Scanner f = new Scanner(System.in);     int y2 = e.nextInt(); 
-        
-        Model grid = new Model(width,height,probC,0,probT);     //grid.start(x2, y2);   
+        Model grid = new Model(width,height,probC,0,100);     
         
         System.out.println("Initial grid");     grid.showGraph();
         
