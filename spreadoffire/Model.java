@@ -1,4 +1,4 @@
-package spreadoffire;
+package test;
 
 import java.util.*;
 import java.awt.Color;
@@ -7,15 +7,14 @@ import java.awt.Color;
  * The model class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.10.14
+ * @version 2014.10.29
  */
 public class Model {
     
-    private View observer;
-    public int width, height;
-    public int probCatch, probBurning, probTree;
     private Cell cell[][];
+    private View observer;
     private boolean cellCheck[][];
+    public int width, height, probCatch, probBurning, probTree;
 
     /**
      * Constructor create the grid
@@ -135,7 +134,9 @@ public class Model {
                     cell[i][j] = new Cell(Cell.YELLOW);
                 }else{
                      if(random(probTree)){
-                        cell[i][j] = new Cell(Cell.GREEN);
+                         if(random(probBurning)){
+                             cell[i][j] = new Cell(Cell.RED);
+                         }else{cell[i][j] = new Cell(Cell.GREEN);}
                     }else{cell[i][j] = new Cell(Cell.YELLOW);}
                 }
             } 
@@ -256,5 +257,3 @@ public class Model {
         if(observer!=null)observer.update(cell);    
     }
 }
-
-
