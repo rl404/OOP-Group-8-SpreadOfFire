@@ -58,7 +58,27 @@ public class Controller extends JFrame{
             JPanel controller1=new JPanel();
             controller.add(controller1);
             //Properties of 1st row
-            {                           
+            {        
+            
+                //Create and Add the moveButton
+                startButton=new JButton("Move");
+                startButton.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e){
+                        //If there is no Thread or Thread is dead, create new Thread and start
+                        if(startThread==null||!startThread.isAlive()){
+                            startThread=new Thread() {  
+                                public void run() { 
+                                        myModel.checkBurn();
+                                        myModel.resetCheck();
+                                }  
+                            };
+                            startThread.start();
+                        }
+                    }
+                });
+                controller1.add(startButton);
+                
                 //Create and Add the startButton
                 startButton=new JButton("Start");
                 startButton.addActionListener(new ActionListener(){
