@@ -12,6 +12,7 @@ import javax.swing.*;
 public class View extends JPanel {
     Cell cell[][];
     int blockWidth,blockHeight;
+    private int step;
     
     /**
      * Paint the cell
@@ -38,6 +39,12 @@ public class View extends JPanel {
                 g.drawRect(border+j*blockWidth,border+i*blockHeight,blockWidth,blockHeight);
             }
         }
+
+        //Paint the "Step" label 
+        g.fillRect(0, 400, 400, 25);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+        g.drawString("Step: "+step, 170, 420);
     }
     
     /**
@@ -68,5 +75,9 @@ public class View extends JPanel {
     public void update(Cell cell[][]){
         this.cell=cell;
         repaint();
+    }
+
+    public void updateStep(int step) {
+        this.step=step;
     }
 }

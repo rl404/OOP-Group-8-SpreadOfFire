@@ -15,6 +15,7 @@ public class Model {
     private View observer;
     private boolean cellCheck[][];
     public int width, height, probCatch, probBurning, probTree;
+    private int step;	
 
     /**
      * Constructor create the grid
@@ -144,6 +145,8 @@ public class Model {
         // Set middle for the starting point
         cell[width/2][height/2] = new Cell(Cell.RED);
         
+        //reset step
+        step=0;
         //Update the field
         update();
     }
@@ -185,6 +188,7 @@ public class Model {
      * Search for the fire 
      */
     public void checkBurn(){
+        step++;
         update();
         try {
             Thread.sleep(100);
@@ -254,6 +258,9 @@ public class Model {
      * Update this field
      */
     public void update(){
-        if(observer!=null)observer.update(cell);    
+        if(observer!=null){
+            observer.update(cell);
+            observer.updateStep(step);
+        } 
     }
 }
