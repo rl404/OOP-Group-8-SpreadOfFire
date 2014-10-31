@@ -260,7 +260,9 @@ public class Model {
     public void update(){
         if(observer!=null){
             observer.update(cell);
-            observer.updateStep(step);
+            if(!finish()){
+                observer.updateStep(step);
+            }
         } 
     }
 }
