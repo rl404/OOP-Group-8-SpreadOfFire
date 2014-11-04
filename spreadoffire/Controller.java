@@ -27,7 +27,7 @@ public class Controller extends JFrame{
         //Create the main frame
         super("Spread of Fire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(860, 470);
+        setSize(860, 450);
         setResizable(false);
         setLayout(new GridLayout(1, 2));
         
