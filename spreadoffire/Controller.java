@@ -10,20 +10,21 @@ import javax.swing.event.ChangeListener;
  * The controller class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.10.28
+ * @version 2014.11.14
  */
-public class Controller extends JFrame{
+public class Controller extends JFrame {
     Model myModel;
     View myView;
     Thread startThread;
     JButton startButton,stopButton,resetButton,moveButton;
-    JLabel probC,probT,probB,ratio,empty,size,delay,step;
+    JLabel probC,probT,probB,ratio,empty,size,delay,step,note;
+    JLabel description = new JLabel("Hover the mouse to see the description.");
     JSlider probCScale,probTScale,probBScale,sizeScale;
 
     /**
      * Create the GUI of project
      */
-    public Controller(){
+    public Controller (){
         //Create the main frame
         super("Spread of Fire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,7 +48,7 @@ public class Controller extends JFrame{
         
         //Create the controller panel
         JPanel controller=new JPanel();
-        controller.setLayout(new GridLayout(6,1));
+        controller.setLayout(new GridLayout(7,1));
         
         //Add the controller panel to the right
         add(controller);
@@ -77,6 +78,11 @@ public class Controller extends JFrame{
                         }
                     }
                 });
+                startButton.addMouseListener(new MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        description.setText("Move Button : Run the fire step by step.");
+                    }
+                });
                 controller1.add(startButton);
                 
                 //Create and Add the startButton
@@ -97,6 +103,11 @@ public class Controller extends JFrame{
                             startThread.start();
                         }
                     }
+                });                
+                startButton.addMouseListener(new MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        description.setText("Start Button : Run the fire automatically.");
+                    }
                 });
                 controller1.add(startButton);
                 
@@ -110,6 +121,11 @@ public class Controller extends JFrame{
                             startThread.stop();
                         }
 
+                    }
+                });                
+                stopButton.addMouseListener(new MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        description.setText("Pause Button : Pause the movement of the fire.");
                     }
                 });
                 controller1.add(stopButton);
@@ -127,11 +143,16 @@ public class Controller extends JFrame{
                         myModel.resetGrid();
                         myModel.resetCheck();
                     }
+                });                
+                resetButton.addMouseListener(new MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        description.setText("Reset Button : Reset the state of the forest or apply the new setting.");
+                    }
                 });
                 controller1.add(resetButton);
             }
             
-            //Create and Add the 2nd row to controller panel - The probability
+            //Create and Add the 2nd row to controller panel - The probCatch
             JPanel controller2=new JPanel();
             controller2.setLayout(new GridLayout(1,2));
             controller.add(controller2);
@@ -142,12 +163,14 @@ public class Controller extends JFrame{
                 controller2.add(controller2_1);
                 //Properties of the label panel
                 {
-                    //Add the name label
-                    controller2_1.add(new JLabel("ProbCatch : "));
-                    
-                    //Add the value label
-                    probC =new JLabel(myModel.probCatch+"%");
-                    controller2_1.add(probC);
+                    //Add the name label                
+                    probC =new JLabel("ProbCatch : "+myModel.probCatch+"%");                       
+                    probC.addMouseListener(new MouseAdapter() {
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                            description.setText("ProbCatch :  The probability of a tree in a cell catching fire if a tree in a neighboring cell is on fire. ");
+                        }
+                    });
+                    controller2_1.add(probC);                    
                 }
                 
                 //Create and add the controller panel
@@ -164,14 +187,14 @@ public class Controller extends JFrame{
                             int newProbability=((JSlider)(e.getSource())).getValue();
                             myModel.setProbCatch(newProbability);
                             //Change the label
-                            probC.setText(myModel.probCatch+"%");
+                            probC.setText("ProbCatch : "+myModel.probCatch+"%");
                         }
                     });
                     controller2_2.add(probCScale);
                 }
             }
             
-            //Create and Add the 3rd row to controller panel - The probability
+            //Create and Add the 3rd row to controller panel - The probTree
             JPanel controller3=new JPanel();
             controller3.setLayout(new GridLayout(1,2));
             controller.add(controller3);
@@ -183,11 +206,13 @@ public class Controller extends JFrame{
                 //Properties of the label panel
                 {
                     //Add the name label
-                    controller3_1.add(new JLabel("ProbTree : "));
-                    
-                    //Add the value label
-                    probT =new JLabel(myModel.probTree+"%");
-                    controller3_1.add(probT);
+                    probT =new JLabel("ProbTree : "+myModel.probTree+"%");
+                    probT.addMouseListener(new MouseAdapter() {
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                            description.setText("ProbTree : The probability that a tree (burning or not burning) initially occupies a site.");
+                        }
+                    });
+                    controller3_1.add(probT);                    
                 }
                 
                 //Create and add the controller panel
@@ -204,14 +229,14 @@ public class Controller extends JFrame{
                             int newProbability=((JSlider)(e.getSource())).getValue();
                             myModel.setProbTree(newProbability);
                             //Change the label
-                            probT.setText(myModel.probTree+"%");
+                            probT.setText("ProbTree : "+myModel.probTree+"%");
                         }
                     });
                     controller3_2.add(probTScale);
                 }
             }
             
-            //Create and Add the 4th row to controller panel - The probability
+            //Create and Add the 4th row to controller panel - The probBurning
             JPanel controller4=new JPanel();
             controller4.setLayout(new GridLayout(1,2));
             controller.add(controller4);
@@ -223,11 +248,13 @@ public class Controller extends JFrame{
                 //Properties of the label panel
                 {
                     //Add the name label
-                    controller4_1.add(new JLabel("ProbBurning : "));
-                    
-                    //Add the value label
-                    probB =new JLabel(myModel.probBurning+"%");
-                    controller4_1.add(probB);
+                    probB =new JLabel("ProbBurning : "+myModel.probBurning+"%");
+                    probB.addMouseListener(new MouseAdapter() {
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                            description.setText("ProbBurning : The probability that the tree is initially burning, if a site has a tree.");
+                        }
+                    });
+                    controller4_1.add(probB);                    
                 }
                 
                 //Create and add the controller panel
@@ -244,7 +271,7 @@ public class Controller extends JFrame{
                             int newProbability=((JSlider)(e.getSource())).getValue();
                             myModel.setProbBurning(newProbability);
                             //Change the label
-                            probB.setText(myModel.probBurning+"%");
+                            probB.setText("ProbBurning : "+myModel.probBurning+"%");
                         }
                     });
                     controller4_2.add(probBScale);
@@ -262,10 +289,12 @@ public class Controller extends JFrame{
                 controller5.add(controller5_1);
                 {
                     //Add the name label
-                    controller5_1.add(new JLabel("Size : "));
-                
-                    //Add the value label
-                    size=new JLabel(""+myModel.width+"x"+myModel.height);
+                    size=new JLabel("Size : "+myModel.width+"x"+myModel.height);
+                     size.addMouseListener(new MouseAdapter() {
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                            description.setText("Size : Size of the forest (width x height).");
+                        }
+                    });
                     controller5_1.add(size);
                 }
                 
@@ -286,7 +315,7 @@ public class Controller extends JFrame{
                             int boxSize=(int)((400)/newSize);
                             myView.setSize(boxSize, boxSize);
                             //Change the label
-                            size.setText(""+myModel.width+"x"+myModel.height);
+                            size.setText("Size : "+myModel.width+"x"+myModel.height);
                             //Stop the Thread if alive
                             if(startThread!=null&&startThread.isAlive()){
                                 startThread.stop();
@@ -295,9 +324,39 @@ public class Controller extends JFrame{
                     });
                     controller5_2.add(sizeScale);
                 }
-            }            
+            }
+            
+            //Create and Add the 6th row to controller panel - Note
+            JPanel controller6=new JPanel();
+            controller6.setLayout(new GridLayout(1,2));
+            controller.add(controller6);
+            //Properties of 6th row
+            {
+                //Create and add the label panel
+                JPanel controller6_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
+                controller6.add(controller6_1);
+                {
+                    //Add the name label
+                    controller6_1.add(new JLabel("*click reset button after change the setting."));
+                }
+            }
+            
+            //Create and Add the 6th row to controller panel - The description
+            JPanel controller7=new JPanel();
+            controller7.setLayout(new GridLayout(1,2));
+            controller.add(controller7);
+            //Properties of 6th row
+            {
+                //Create and add the label panel
+                JPanel controller7_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
+                controller7.add(controller7_1);
+                {
+                    //Add the name label
+                    controller7_1.add(description);
+                }
+            }
         }
         //Set the frame Visible
         setVisible(true);
-    }
+    }  
 }
