@@ -29,7 +29,9 @@ public class Controller extends JFrame {
         super("Spread of Fire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 600);
-        setResizable(true);
+        setResizable(false);
+        
+        
         setLayout(new GridLayout(1, 2));
         
         //Create the model, the main process of project
@@ -312,7 +314,7 @@ public class Controller extends JFrame {
                             int newSize=((JSlider)(e.getSource())).getValue();
                             myModel.setSize(newSize,newSize);
                             //Set the Size in myView
-                            int boxSize=(int)((400)/newSize);
+                            int boxSize=(int)((500)/newSize);
                             myView.setSize(boxSize, boxSize);
                             //Change the label
                             size.setText("Size : "+myModel.width+"x"+myModel.height);

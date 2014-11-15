@@ -20,7 +20,7 @@ public class View extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         //Fill the back ground with black
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, 500, 500);
         
         //Calculate the border width
