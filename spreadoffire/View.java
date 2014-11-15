@@ -20,11 +20,11 @@ public class View extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         //Fill the back ground with black
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, 400, 400);
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 500, 500);
         
         //Calculate the border width
-        int border=(400-(blockWidth*cell.length))/2;
+        int border=(500-(blockWidth*cell.length))/2;
         
         //Don't paint if there is no cell
         if(cell==null)return;
@@ -41,10 +41,10 @@ public class View extends JPanel {
         }
 
         //Paint the "Step" label 
-        g.fillRect(0, 400, 400, 25);
+        g.fillRect(0, 500, 500, 25);
         g.setColor(Color.WHITE);
         g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
-        g.drawString("Step: "+step, 170, 420);
+        g.drawString("Step: "+step, 225, 520);
     }
     
     /**

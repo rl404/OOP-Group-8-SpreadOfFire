@@ -28,16 +28,16 @@ public class Controller extends JFrame {
         //Create the main frame
         super("Spread of Fire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(860, 450);
-        setResizable(false);
+        setSize(1200, 600);
+        setResizable(true);
         setLayout(new GridLayout(1, 2));
         
         //Create the model, the main process of project
         myModel=new Model();
         
         //Create the view, the output of main process of project
-        int boxWidth=(int)((400)/myModel.width);
-        int boxHeight=(int)(400/myModel.height);
+        int boxWidth=(int)((500)/myModel.width);
+        int boxHeight=(int)(500/myModel.height);
         myView=new View(boxWidth,boxHeight);
         
         //Add the myView panel to the left
