@@ -31,7 +31,7 @@ public class SpreadOfFire {
         //System.out.println("Set the density of forest : (0-1) ");
         //Scanner d = new Scanner(System.in);    int probT = d.nextInt();        
         
-        Model grid = new Model(width,height,probC,0,100);     
+        Model grid = new Model(width,height,probC,0,100,0);     
         
         System.out.println("Initial grid");     grid.showGraph();
         
