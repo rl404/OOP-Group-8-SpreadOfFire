@@ -7,7 +7,7 @@ import javax.swing.*;
  * The view class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.10.28
+ * @version 2014.11.16
  */
 public class View extends JPanel {
     Cell cell[][];
@@ -21,10 +21,10 @@ public class View extends JPanel {
     public void paintComponent(Graphics g){
         //Fill the back ground with black
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, 500, 500);
+        g.fillRect(0, 0, getWidth()-15, getHeight());
         
         //Calculate the border width
-        int border=(500-(blockWidth*cell.length))/2;
+        int border=(getWidth()-15-(blockWidth*cell.length))/2;
         
         //Don't paint if there is no cell
         if(cell==null)return;
@@ -41,10 +41,10 @@ public class View extends JPanel {
         }
 
         //Paint the "Step" label 
-        g.fillRect(0, 500, 500, 25);
+        g.fillRect(0, getHeight(), getWidth()-15, 25);
         g.setColor(Color.WHITE);
         g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
-        g.drawString("Step: "+step, 225, 520);
+        g.drawString("Step: "+step, getWidth()/2-35, getHeight()-10);
     }
     
     /**
