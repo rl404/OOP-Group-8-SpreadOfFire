@@ -7,78 +7,98 @@ import java.awt.Color;
  * The model class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.10.29
+ * @version 2014.11.16
  */
 public class Model {
     
     private Cell cell[][];
     private View observer;
-    private boolean cellCheck[][];
-    public int width, height, probCatch, probBurning, probTree;
-    private int step;	
+    private boolean cellCheck[][],windN,windS,windW,windE;
+    public int width, height, probCatch, probBurning, probTree,probLighting,lightingStep,step;
 
     /**
      * Constructor create the grid
      */
     public Model() {
-        this(30,30,50,0,100);
+        this(30,30,50,0,100,0);
     }
     
     /**
      * Constructor, create the field
-     * @param width
-     * @param height
+     * @param width width of the array
+     * @param height height of the array
      */
     public Model(int width, int height){
-        this(width,height,50,0,100);
+        this(width,height,50,0,100,0);
     }
     
     /**
      * Constructor create the grid
-     * @param width
-     * @param height
-     * @param probC
-     * @param probB
-     * @param probT
+     * @param width width of the array
+     * @param height height of the array
+     * @param probC the probCatch
+     * @param probB the probBurning
+     * @param probT the probTree
+     * @param probL the probLighting
      */
-    public Model(int width, int height,int probC, int probB, int probT) {
-        this.width = width;
-        this.height = height;
-        this.probCatch = probC;
-        this.probBurning = probB;
-        this.probTree = probT;
+    public Model(int width, int height,int probC, int probB, int probT, int probL) {
+        this.width = width;                 this.height = height;                       windN = true;      windS = true;
+        this.probCatch = probC;       this.probBurning = probB;            windE = true;      windW = true;
+        this.probTree = probT;          this.probLighting = probL;            lightingStep = 1;
         //Reset the field
         resetGrid();
     }    
     
     /**
      * Set the burning probability of the forest
-     * @param probCatch
+     * @param probC the probCatch
      */
     public void setProbCatch(int probC) {
         this.probCatch = probC;
     }
-    
-    /**
-     * Set the burning probability each tree
-     * @param probBurning
-     */
-    public void setProbBurning(int probB) {
-        this.probBurning = probB;
-    }
-    
+        
     /**
      * Set the density of forest
-     * @param probT
+     * @param probT the probTree
      */
     public void setProbTree(int probT) {
         this.probTree = probT;
     }
     
     /**
+     * Set the burning probability each tree
+     * @param probB the probBurning
+     */
+    public void setProbBurning(int probB) {
+        this.probBurning = probB;
+    }
+        
+    /**
+     * Set the probability that the tree is struck by lightning
+     * @param probL the probLighting
+     */
+    public void setProbLighting(int probL) {
+        this.probLighting = probL;
+    }
+    
+    /**
+     * set the wind direction
+     * @param s the string of the wind direction(north,south,west,east)
+     * @param b the boolean for the direction
+     */
+    public void setWind(String s,boolean b){
+        if(s.equals("north")) windN = b;
+        if(s.equals("south")) windS = b;
+        if(s.equals("east")) windE = b;
+        if(s.equals("west")) windW = b;
+        //reset all wind state
+        if(s.equals("all")){windN = b;windS = b;windE = b;windW = b;}
+    }
+    
+    /**
      * set size of grid
-     * @param width
-     * @param height 
+     * @param width width of the array
+     * @param height height of the array
      */
     public void setSize(int width,int height){
         this.width=width;
@@ -87,10 +107,18 @@ public class Model {
         resetGrid();
     }
     
+     /**
+     * set the number of step of lighting to burn a tree
+     * @param s number of step
+     */
+    public void setLightingStep(int s){
+        this.lightingStep=s;
+    }
+    
     /**
      * Get the RGB Color of cell at x,y
-     * @param x
-     * @param y
+     * @param x x position of the tree
+     * @param y y position of the tree
      * @return RGB Color
      */
     public Color getColor(int x,int y){
@@ -105,8 +133,8 @@ public class Model {
     
     /**
      * Get the state of cell at x,y
-     * @param x
-     * @param y
+     * @param x x position of the tree
+     * @param y y position of the tree
      * @return Cell state
      */
     private int get(int x,int y){
@@ -164,22 +192,22 @@ public class Model {
     
     /**
      * Spread the fire from x,y 
-     * @param s
-     * @param x
-     * @param y
+     * @param s string of fire direction
+     * @param x x position of the fire
+     * @param y y position of the fire
      */
     public void spread(String s,int x, int y){               
-        if(s.equals("north")  && get(x,y-1) == Cell.GREEN && random(probCatch)==true){       
-                cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;
+        if(s.equals("north") && windN && get(x-1,y) == Cell.GREEN && random(probCatch)==true){       
+                cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;
         }
-        if(s.equals("south") && get(x,y+1) == Cell.GREEN && random(probCatch)==true){  
-                cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;  
+        if(s.equals("south") && windS && get(x+1,y) == Cell.GREEN && random(probCatch)==true){  
+                cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true;  
         }
-        if(s.equals("west") && get(x-1,y) == Cell.GREEN && random(probCatch)==true){
-                cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;      
+        if(s.equals("west") && windW && get(x,y-1) == Cell.GREEN && random(probCatch)==true){
+                cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;      
         }
-        if(s.equals("east") && get(x+1,y) == Cell.GREEN && random(probCatch)==true){
-                cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true;              
+        if(s.equals("east") && windE && get(x,y+1) == Cell.GREEN && random(probCatch)==true){
+                cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;              
         }  
         update();   
     }
@@ -195,20 +223,54 @@ public class Model {
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
+        //Go through the field
         for(int i = 0; i < cell.length-1; i++){
-            for(int j=0; j<cell[0].length-1; j++){
-                if(get(i,j) == Cell.RED && cellCheck[i][j] == false){
+            for(int j=0; j<cell[0].length-1; j++){  
+                
+                //If found lighting tree and probCatch is true
+                if(get(i,j) == Cell.BLUE && random(probCatch)){
+                    
+                    //If current step is the step when the lighting tree burn
+                    if(cell[i][j].getLightingStep()==1){
+                        
+                        //Burn the tree
+                        cell[i][j].set(Cell.RED);
+                        
+                        //Else decrease the lighting step
+                    }else{
+                        cell[i][j].stepLighting();
+                    }
+                                        
+                }else if(get(i,j) == Cell.BLUE){
+                    //Change back to normal tree
+                    cell[i][j].set(Cell.GREEN);
+                }
+                
+                //Burn and spread if found a fire
+                if((get(i,j) == Cell.RED && cellCheck[i][j] == false)){
                     cell[i][j].set(Cell.YELLOW);
-                    spread("north",i,j);    spread("south",i,j);  
-                    spread("west",i,j);     spread("east",i,j);     
+                    spread("north",i,j);      spread("south",i,j);  
+                    spread("west",i,j);        spread("east",i,j);                                                 
                 }
             }
         }
-    }             
-         
+    }     
+    
+    /**
+     * Start the lighting to hit at random tree
+     */
+    public void lighting(){        
+        int x = (int)(Math.random()*cell.length);
+        int y = (int)(Math.random()*cell[0].length);
+        if(random(probLighting) && get(x,y) == Cell.GREEN){
+            cell[x][y].set(Cell.BLUE); 
+            cell[x][y].setLightingStep(lightingStep);
+        }
+    }
+        
      /**
-     * Check if there is no burning finish (no 2 anymore)
-     * @return true if there is still burning tree in th forest
+     * Check if there is no burning finish anymore (no 2 anymore)
+     * @return true if there is still burning tree in the forest
      */
     public boolean finish(){
         for(int i=0;i<cell.length;i++){
@@ -220,18 +282,17 @@ public class Model {
     }
     
     /**
-     * random a number
+     * Random a number
+     * @param a double of probability
      * @return boolean of random number
      */
      public boolean random(double a){
         double rnd = Math.random()*100;
-        if(rnd<a)
-            return true;
-        return false;
+        return rnd<a;
     }
 
     /**
-     * print grid 
+     * Print grid 
      */
     public void showGraph(){
         for(int i = 0; i < cell.length; i++){
