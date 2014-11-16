@@ -6,12 +6,12 @@ import java.awt.Color;
  * The cell class that contain the properties of cell
  * 
  * @author OOPgroup8
- * @version 2014.10.14
+ * @version 2014.11.16
  */
 
 public class Cell {
-    public static final int GREEN=2,RED=1,YELLOW=0;
-    private int color;
+    public static final int BLUE=3,GREEN=2,RED=1,YELLOW=0;
+    private int color,lightingStep;
 
     /**
      * Constructor - create the empty cell
@@ -50,13 +50,37 @@ public class Cell {
      */
     public boolean isEmpty(){
         return color==YELLOW;
+    }   
+    
+    /**
+     * Set the lighting step
+     * @param s 
+     */
+    public void setLightingStep(int s){
+        this.lightingStep=s;
     }
-
+    
+    /**
+     * Decrease the lighting step
+     */
+    public void stepLighting(){
+        this.lightingStep--;
+    }
+    
+    /**
+     * Get the current lighting step
+     * @return lightingStep
+     */
+    public int getLightingStep(){
+        return lightingStep;
+    }
+    
     /**
      * Get the RGB Color of cell
      * @return RGB Color
      */
     public Color getColor(){
+        if(color==BLUE)return Color.BLUE;
         if(color==GREEN)return Color.GREEN;
         if(color==RED)return Color.RED;
         return Color.YELLOW;
