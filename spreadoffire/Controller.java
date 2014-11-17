@@ -422,6 +422,7 @@ public class Controller extends JFrame {
                                 controller7_2.setVisible(false);
                                 controller8.setVisible(false);
                                 myModel.setWind("all", true);
+                                myModel.setWindLevel(0);
                             }
                         }
                     });
@@ -455,7 +456,7 @@ public class Controller extends JFrame {
                         @Override
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             //Hover the mouse to see the description
-                            description.setText("Level 0 : No wind(will only change the direction of fire).");
+                            description.setText("Level 0 : No wind(will only change the direction of spread of fire).");
                         }
                     });
                         windGroup.add(wind0);
