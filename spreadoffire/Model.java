@@ -358,7 +358,7 @@ public class Model {
     public boolean finish(){
         for(int i=0;i<cell.length;i++){
             for(int j=0;j<cell[0].length;j++){
-                if(get(i,j) == Cell.RED)
+                if(get(i,j) == Cell.RED || get(i,j) ==Cell.BLUE)
                     return false;
             }
         } return true;
