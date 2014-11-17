@@ -10,13 +10,14 @@ import javax.swing.event.ChangeListener;
  * The controller class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.11.16
+ * @version 2014.11.17
  */
 public class Controller extends JFrame {
     Model myModel;
     View myView;
     Thread startThread;
     JCheckBox windBox,windBoxN,windBoxS,windBoxW,windBoxE,lightingBox;
+    JRadioButton wind0,wind1,wind2;
     JButton startButton,stopButton,resetButton,moveButton;
     JLabel probC,probT,probB,probL,ratio,empty,size,delay,step,note;
     JLabel description = new JLabel("Hover the mouse to see the description.");
@@ -72,9 +73,9 @@ public class Controller extends JFrame {
                         if(startThread==null||!startThread.isAlive()){
                             startThread=new Thread() {  
                                 public void run() { 
-                                    myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));
-                                    myModel.checkBurn();
+                                    myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));                                    
                                     myModel.lighting();
+                                    myModel.checkBurn();
                                     myModel.resetCheck();
                                 }  
                             };
@@ -101,9 +102,9 @@ public class Controller extends JFrame {
                             startThread=new Thread() {  
                                 public void run() { 
                                     while(!myModel.finish()){                                        
-                                        myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));
-                                        myModel.checkBurn();
+                                        myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));                                        
                                         myModel.lighting();
+                                        myModel.checkBurn();
                                         myModel.resetCheck();
                                     }
                                 }  
@@ -399,9 +400,13 @@ public class Controller extends JFrame {
             controller.add(controller8);
              //Properties of 7th row
             {
-                //Create and add the label panel
-                JPanel controller7_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
+                //Create and add the label and wind level radiobox panel
+                final JPanel controller7_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
+                final JPanel controller7_2=new JPanel(new FlowLayout(FlowLayout.LEFT));
+                controller7_2.setLayout(new GridLayout(1,3));
+                controller7_2.setVisible(false);
                 controller7.add(controller7_1);
+                controller7.add(controller7_2);
                 {
                     //Add the checkbox
                     windBox = new JCheckBox("Wind");
@@ -409,10 +414,12 @@ public class Controller extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //If selected, 4 wind direction options will appear
-                            if(windBox.isSelected()){
+                            if(windBox.isSelected()){                               
+                                controller7_2.setVisible(true);
                                 controller8.setVisible(true);
                                 myModel.setWind("all", false);
                             }else{
+                                controller7_2.setVisible(false);
                                 controller8.setVisible(false);
                                 myModel.setWind("all", true);
                             }
@@ -426,6 +433,82 @@ public class Controller extends JFrame {
                         }
                     });    
                     controller7_1.add(windBox);
+                }
+                
+                //Create panel for each wind level                
+                ButtonGroup windGroup = new ButtonGroup();
+                {    
+                    //Wind level 0
+                    JPanel controller7_2_1=new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    controller7_2.add(controller7_2_1);
+                    {
+                        wind0 = new JRadioButton("Level 0",true);
+                        wind0.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                if(wind0.isSelected()){
+                                    myModel.setWindLevel(0);
+                                }
+                            }
+                        });
+                        wind0.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                            //Hover the mouse to see the description
+                            description.setText("Level 0 : No wind(will only change the direction of fire).");
+                        }
+                    });
+                        windGroup.add(wind0);
+                        controller7_2_1.add(wind0);
+                    }
+                    
+                    //Wind level 1
+                    JPanel controller7_2_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    controller7_2.add(controller7_2_2);
+                    {
+                        wind1 = new JRadioButton("Level 1",false);
+                        wind1.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                if(wind1.isSelected()){
+                                    myModel.setWindLevel(1);
+                                }
+                            }
+                        });
+                        wind1.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                            //Hover the mouse to see the description
+                            description.setText("Level 1 : Low level of wind.");
+                        }
+                    });
+                        windGroup.add(wind1);
+                        controller7_2_2.add(wind1);
+                    }
+                    
+                    //Wind level 2
+                    JPanel controller7_2_3=new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    controller7_2.add(controller7_2_3);
+                    {
+                        wind2 = new JRadioButton("Level 2",false);
+                        wind2.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                if(wind2.isSelected()){
+                                    myModel.setWindLevel(2);
+                                }
+                            }
+                        });
+                        wind2.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                            //Hover the mouse to see the description
+                            description.setText("Level 2 : High level of wind.");
+                        }
+                    });
+                        windGroup.add(wind2);
+                        controller7_2_3.add(wind2);
+                    }
                 }
             }
             //Property of 8th row
