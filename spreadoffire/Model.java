@@ -7,14 +7,14 @@ import java.awt.Color;
  * The model class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.11.16
+ * @version 2014.11.17
  */
 public class Model {
     
     private Cell cell[][];
     private View observer;
     private boolean cellCheck[][],windN,windS,windW,windE;
-    public int width, height, probCatch, probBurning, probTree,probLighting,lightingStep,step;
+    public int width, height, probCatch, probBurning, probTree,probLighting,lightingStep,windLevel,step;
 
     /**
      * Constructor create the grid
@@ -44,7 +44,7 @@ public class Model {
     public Model(int width, int height,int probC, int probB, int probT, int probL) {
         this.width = width;                 this.height = height;                       windN = true;      windS = true;
         this.probCatch = probC;       this.probBurning = probB;            windE = true;      windW = true;
-        this.probTree = probT;          this.probLighting = probL;            lightingStep = 1;
+        this.probTree = probT;          this.probLighting = probL;            lightingStep = 1; windLevel=0;
         //Reset the field
         resetGrid();
     }    
@@ -79,6 +79,14 @@ public class Model {
      */
     public void setProbLighting(int probL) {
         this.probLighting = probL;
+    }
+    
+    /**
+     * Set the wind level
+     * @param windL the wind level
+     */
+    public void setWindLevel(int windL) {
+        this.windLevel = windL;
     }
     
     /**
@@ -195,20 +203,92 @@ public class Model {
      * @param s string of fire direction
      * @param x x position of the fire
      * @param y y position of the fire
+     * @param windL the wind level
      */
-    public void spread(String s,int x, int y){               
-        if(s.equals("north") && windN && get(x-1,y) == Cell.GREEN && random(probCatch)==true){       
-                cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;
+    public void spread(String s,int x,int y,int windL){        
+        //The normal spread direction without wind
+        if(windL==0){
+            if(s.equals("north") && windN && get(x-1,y) == Cell.GREEN && random(probCatch)==true){       
+                    cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;
+            }
+            if(s.equals("south") && windS && get(x+1,y) == Cell.GREEN && random(probCatch)==true){  
+                    cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true;  
+            }
+            if(s.equals("west") && windW && get(x,y-1) == Cell.GREEN && random(probCatch)==true){
+                    cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;      
+            }
+            if(s.equals("east") && windE && get(x,y+1) == Cell.GREEN && random(probCatch)==true){
+                    cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;              
+            }       
         }
-        if(s.equals("south") && windS && get(x+1,y) == Cell.GREEN && random(probCatch)==true){  
-                cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true;  
+        
+        //When wind level is low
+        if(windL==1){
+            if(s.equals("north") && get(x-1,y) == Cell.GREEN && random(probCatch)==true){       
+                    cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;
+                    
+                    //Spread to the next tree
+                    if(windN && get(x-2,y) == Cell.GREEN && random(probCatch)==true){
+                        cell[x-2][y].set(Cell.RED); cellCheck[x-2][y] = true;
+                    }
+            }
+            if(s.equals("south") && get(x+1,y) == Cell.GREEN && random(probCatch)==true){  
+                    cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true;  
+                    
+                    //Spread to the next tree
+                    if(windS && get(x+2,y) == Cell.GREEN && random(probCatch)==true){
+                        cell[x+2][y].set(Cell.RED); cellCheck[x+2][y] = true;
+                    }
+            }
+            if(s.equals("west") && get(x,y-1) == Cell.GREEN && random(probCatch)==true){
+                    cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;   
+                    
+                    //Spread to the next tree
+                    if(windW && get(x,y-2) == Cell.GREEN && random(probCatch)==true){
+                        cell[x][y-2].set(Cell.RED); cellCheck[x][y-2] = true;
+                    }
+            }
+            if(s.equals("east") && get(x,y+1) == Cell.GREEN && random(probCatch)==true){
+                    cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;  
+                    
+                    //Spread to the next tree
+                    if(windE && get(x,y+2) == Cell.GREEN && random(probCatch)==true){
+                        cell[x][y+2].set(Cell.RED); cellCheck[x][y+2] = true;
+                    }
+            }          
         }
-        if(s.equals("west") && windW && get(x,y-1) == Cell.GREEN && random(probCatch)==true){
-                cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;      
+        
+        //When wind level is high   
+        if(windL==2){
+            if(s.equals("north") && !windS && get(x-1,y) == Cell.GREEN && random(probCatch)==true){       
+                    cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;
+                    
+                    //Spread to the next tree
+                    if(windN && get(x-3,y) == Cell.GREEN && random(probCatch)==true)
+                        cell[x-3][y].set(Cell.RED); cellCheck[x-3][y] = true;
+            }
+            if(s.equals("south") && !windN && get(x+1,y) == Cell.GREEN && random(probCatch)==true){  
+                    cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true; 
+                    
+                    //Spread to the next tree
+                    if(windS && get(x+3,y) == Cell.GREEN && random(probCatch)==true)
+                        cell[x+3][y].set(Cell.RED); cellCheck[x+3][y] = true;
+            }
+            if(s.equals("west") && !windE && get(x,y-1) == Cell.GREEN && random(probCatch)==true){
+                    cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;    
+                    
+                    //Spread to the next tree
+                    if(windW && get(x,y-3) == Cell.GREEN && random(probCatch)==true)
+                        cell[x][y-3].set(Cell.RED); cellCheck[x][y-3] = true;
+            }
+            if(s.equals("east") && !windW && get(x,y+1) == Cell.GREEN && random(probCatch)==true){
+                    cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;   
+                    
+                    //Spread to the next tree
+                    if(windE && get(x,y+3) == Cell.GREEN && random(probCatch)==true)
+                        cell[x][y+3].set(Cell.RED); cellCheck[x][y+3] = true;
+            } 
         }
-        if(s.equals("east") && windE && get(x,y+1) == Cell.GREEN && random(probCatch)==true){
-                cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;              
-        }  
         update();   
     }
     
@@ -231,16 +311,17 @@ public class Model {
                 if(get(i,j) == Cell.BLUE && random(probCatch)){
                     
                     //If current step is the step when the lighting tree burn
-                    if(cell[i][j].getLightingStep()==1){
+                    if(cell[i][j].getLightingStep()==0){
                         
                         //Burn the tree
                         cell[i][j].set(Cell.RED);
                         
-                        //Else decrease the lighting step
+                    //Else decrease the lighting step
                     }else{
                         cell[i][j].stepLighting();
                     }
-                                        
+                    
+               //If the probCatch is false                         
                 }else if(get(i,j) == Cell.BLUE){
                     //Change back to normal tree
                     cell[i][j].set(Cell.GREEN);
@@ -248,9 +329,11 @@ public class Model {
                 
                 //Burn and spread if found a fire
                 if((get(i,j) == Cell.RED && cellCheck[i][j] == false)){
-                    cell[i][j].set(Cell.YELLOW);
-                    spread("north",i,j);      spread("south",i,j);  
-                    spread("west",i,j);        spread("east",i,j);                                                 
+                    cell[i][j].set(Cell.YELLOW);  
+                    try{
+                    spread("north",i,j,windLevel);      spread("south",i,j,windLevel);  
+                    spread("west",i,j,windLevel);        spread("east",i,j,windLevel);  
+                    }catch(Exception e){}
                 }
             }
         }
