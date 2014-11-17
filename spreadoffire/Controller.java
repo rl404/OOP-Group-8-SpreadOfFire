@@ -73,10 +73,12 @@ public class Controller extends JFrame {
                         if(startThread==null||!startThread.isAlive()){
                             startThread=new Thread() {  
                                 public void run() { 
-                                    myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));                                    
-                                    myModel.lighting();
-                                    myModel.checkBurn();
-                                    myModel.resetCheck();
+                                    if(!myModel.finish()){
+                                        myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));                                    
+                                        myModel.lighting();
+                                        myModel.checkBurn();
+                                        myModel.resetCheck();
+                                    }
                                 }  
                             };
                             startThread.start();
