@@ -6,12 +6,12 @@ import java.awt.Color;
  * The cell class that contain the properties of cell
  * 
  * @author OOPgroup8
- * @version 2014.11.16
+ * @version 1.0 2014.11.18
  */
 
 public class Cell {
-    public static final int BLUE=3,GREEN=2,RED=1,YELLOW=0;
-    private int color,lightningStep;
+    public static final int GREEN=2,RED=1,YELLOW=0;
+    private int color;
 
     /**
      * Constructor - create the empty cell
@@ -53,34 +53,10 @@ public class Cell {
     }   
     
     /**
-     * Set the lightning step
-     * @param s 
-     */
-    public void setLightningStep(int s){
-        this.lightningStep=s;
-    }
-    
-    /**
-     * Decrease the lightning step
-     */
-    public void stepLightning(){
-        this.lightningStep--;
-    }
-    
-    /**
-     * Get the current lightning step
-     * @return lightningStep
-     */
-    public int getLightningStep(){
-        return lightningStep;
-    }
-    
-    /**
      * Get the RGB Color of cell
      * @return RGB Color
      */
     public Color getColor(){
-        if(color==BLUE)return Color.BLUE;
         if(color==GREEN)return Color.GREEN;
         if(color==RED)return Color.RED;
         return Color.YELLOW;
