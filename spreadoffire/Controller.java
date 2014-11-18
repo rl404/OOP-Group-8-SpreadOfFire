@@ -368,6 +368,7 @@ public class Controller extends JFrame {
                             if(lightingBox.isSelected()){
                                 controller6_2.setVisible(true);
                             }else{
+                                myModel.setLightingStep(1);
                                 controller6_2.setVisible(false);
                             }
                         }
