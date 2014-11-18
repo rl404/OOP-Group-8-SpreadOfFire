@@ -16,14 +16,14 @@ public class Controller extends JFrame {
     Model myModel;
     View myView;
     Thread startThread;
-    JCheckBox windBox,windBoxN,windBoxS,windBoxW,windBoxE,lightingBox;
+    JCheckBox windBox,windBoxN,windBoxS,windBoxW,windBoxE,lightningBox;
     JRadioButton wind0,wind1,wind2;
     ButtonGroup windGroupLevel,windGroupNSWE;
     JButton startButton,stopButton,resetButton,moveButton;
     JLabel probC,probT,probB,probL,ratio,empty,size,delay,step,note;
     JLabel description = new JLabel("Hover the mouse to see the description.");
     JSlider probCScale,probTScale,probBScale,probLScale,sizeScale;
-    JTextField lightingStep;
+    JTextField lightningStep;
 
     /**
      * Create the GUI of project
@@ -73,8 +73,8 @@ public class Controller extends JFrame {
                             startThread=new Thread() {  
                                 public void run() { 
                                     if(!myModel.finish()){
-                                        myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));                                    
-                                        myModel.lighting();
+                                        myModel.setLightningStep(Integer.parseInt(lightningStep.getText()));                                    
+                                        myModel.lightning();
                                         myModel.checkBurn();
                                         myModel.resetCheck();
                                     }
@@ -103,8 +103,8 @@ public class Controller extends JFrame {
                             startThread=new Thread() {  
                                 public void run() { 
                                     while(!myModel.finish()){                                        
-                                        myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));                                        
-                                        myModel.lighting();
+                                        myModel.setLightningStep(Integer.parseInt(lightningStep.getText()));                                        
+                                        myModel.lightning();
                                         myModel.checkBurn();
                                         myModel.resetCheck();
                                     }
@@ -299,7 +299,7 @@ public class Controller extends JFrame {
                 }
             }      
             
-             //Create and Add the 5th row to controller panel - The probLighting
+             //Create and Add the 5th row to controller panel - The probLightning
             JPanel controller5=new JPanel();
             controller5.setLayout(new GridLayout(1,2));
             controller.add(controller5);
@@ -311,12 +311,12 @@ public class Controller extends JFrame {
                 //Properties of the label panel
                 {                
                     //Add the name label
-                    probL =new JLabel("ProbLighting : "+myModel.probLighting+"%");
+                    probL =new JLabel("ProbLightning : "+myModel.probLightning+"%");
                     probL.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             //Hover the mouse to see the description
-                            description.setText("ProbLighting : The probability that the tree is struck by lightning.");
+                            description.setText("ProbLightning : The probability that the tree is struck by lightning.");
                         }
                     });
                     controller5_1.add(probL);                    
@@ -334,16 +334,16 @@ public class Controller extends JFrame {
                         public void stateChanged(ChangeEvent e) {
                             //Set the probability
                             int newProbability=((JSlider)(e.getSource())).getValue();
-                            myModel.setProbLighting(newProbability);
+                            myModel.setProbLightning(newProbability);
                             //Change the label
-                            probL.setText("ProbLighting : "+myModel.probLighting+"%");
+                            probL.setText("ProbLightning : "+myModel.probLightning+"%");
                         }
                     });
                     controller5_2.add(probLScale);
                 }
             }         
             
-            //Create and Add the 6th row to controller panel - The lighting steps
+            //Create and Add the 6th row to controller panel - The lightning steps
             JPanel controller6 = new JPanel();                
             controller6.setLayout(new GridLayout(1,2));
             controller.add(controller6);            
@@ -358,35 +358,35 @@ public class Controller extends JFrame {
                 //Properties of the label panel
                 {                    
                     //Add the checkbox
-                    lightingBox = new JCheckBox("Lighting step ");
-                    lightingBox.addActionListener(new ActionListener() {
+                    lightningBox = new JCheckBox("Lightning step ");
+                    lightningBox.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //If selected, the textfield for step will appear
-                            if(lightingBox.isSelected()){
+                            if(lightningBox.isSelected()){
                                 controller6_2.setVisible(true);
                             }else{
-                                myModel.setLightingStep(1);
+                                myModel.setLightningStep(1);
                                 controller6_2.setVisible(false);
                             }
                         }
                     });
-                    lightingBox.addMouseListener(new MouseAdapter() {
+                    lightningBox.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             //Hover the mouse to see the description
-                            description.setText("Lighting step : Number of step that a tree needs to burn after hit by lighting. ");
+                            description.setText("Lightning step : Number of step that a tree needs to burn after hit by lightning. ");
                         }
                     });    
-                    controller6_1.add(lightingBox);
+                    controller6_1.add(lightningBox);
                 }                
                 //Property of the step textfield panel
                 {
                     //Add the step textfield
-                    lightingStep = new JTextField("1");
-                    lightingStep.setPreferredSize(new Dimension(50, 25));
-                    lightingStep.setHorizontalAlignment(JTextField.CENTER);
-                    controller6_2.add(lightingStep);
+                    lightningStep = new JTextField("1");
+                    lightningStep.setPreferredSize(new Dimension(50, 25));
+                    lightningStep.setHorizontalAlignment(JTextField.CENTER);
+                    controller6_2.add(lightningStep);
                     controller6_2.add(new JLabel("steps"));
                 }
             }
