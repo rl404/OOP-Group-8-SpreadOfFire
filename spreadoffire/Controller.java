@@ -10,20 +10,16 @@ import javax.swing.event.ChangeListener;
  * The controller class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.11.17
+ * @version 1.0 2014.11.18
  */
 public class Controller extends JFrame {
     Model myModel;
     View myView;
     Thread startThread;
-    JCheckBox windBox,windBoxN,windBoxS,windBoxW,windBoxE,lightningBox;
-    JRadioButton wind0,wind1,wind2;
     JButton startButton,stopButton,resetButton,moveButton;
-    JLabel probC,probT,probB,probL,ratio,empty,size,delay,step,note;
+    JLabel probC,probT,probB,ratio,empty,size,delay,step,note;
     JLabel description = new JLabel("Hover the mouse to see the description.");
-    JSlider probCScale,probTScale,probBScale,probLScale,sizeScale;
-    JTabbedPane settingTab;
-    JTextField lightningStep;
+    JSlider probCScale,probTScale,probBScale,sizeScale;
 
     /**
      * Create the GUI of project
@@ -51,7 +47,7 @@ public class Controller extends JFrame {
         
         //Create the controller panel
         JPanel controller=new JPanel();
-        controller.setLayout(new GridLayout(15,1));
+        controller.setLayout(new GridLayout(7,1));
         
         //Add the controller panel to the right
         add(controller);
@@ -62,8 +58,7 @@ public class Controller extends JFrame {
             JPanel controller1=new JPanel();
             controller.add(controller1);
             //Properties of 1st row
-            {        
-            
+            {                    
                 //Create and Add the moveButton
                 startButton=new JButton("Move");
                 startButton.addActionListener(new ActionListener(){
@@ -73,10 +68,10 @@ public class Controller extends JFrame {
                         if(startThread==null||!startThread.isAlive()){
                             startThread=new Thread() {  
                                 public void run() { 
-                                    myModel.setLightningStep(Integer.parseInt(lightningStep.getText()));                                    
-                                    myModel.lightning();
-                                    myModel.checkBurn();
-                                    myModel.resetCheck();
+                                    if(!myModel.finish()){
+                                        myModel.checkBurn();
+                                        myModel.resetCheck();
+                                    }
                                 }  
                             };
                             startThread.start();
@@ -101,9 +96,7 @@ public class Controller extends JFrame {
                         if(startThread==null||!startThread.isAlive()){
                             startThread=new Thread() {  
                                 public void run() { 
-                                    while(!myModel.finish()){                                        
-                                        myModel.setLightningStep(Integer.parseInt(lightningStep.getText()));                                        
-                                        myModel.lightning();
+                                    while(!myModel.finish()){ 
                                         myModel.checkBurn();
                                         myModel.resetCheck();
                                     }
@@ -131,7 +124,6 @@ public class Controller extends JFrame {
                         if(startThread!=null&&startThread.isAlive()){
                             startThread.stop();
                         }
-
                     }
                 });                
                 stopButton.addMouseListener(new MouseAdapter() {
@@ -228,7 +220,7 @@ public class Controller extends JFrame {
                         @Override
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             //Hover the mouse to see the description
-                            description.setText("ProbTree : The probability that a tree (burning or not burning) initially occupies a site.");
+                            description.setText("ProbTree : The probability that a tree initially occupies a site.");
                         }
                     });
                     controller3_1.add(probT);                    
@@ -298,8 +290,8 @@ public class Controller extends JFrame {
                     controller4_2.add(probBScale);
                 }
             }      
-            
-             //Create and Add the 5th row to controller panel - The probLightning
+             
+            //Create and Add the 5th row to controller panel - The Size
             JPanel controller5=new JPanel();
             controller5.setLayout(new GridLayout(1,2));
             controller.add(controller5);
@@ -308,322 +300,6 @@ public class Controller extends JFrame {
                 //Create and add the label panel
                 JPanel controller5_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
                 controller5.add(controller5_1);
-                //Properties of the label panel
-                {                
-                    //Add the name label
-                    probL =new JLabel("ProbLightning : "+myModel.probLightning+"%");
-                    probL.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("ProbLightning : The probability that the tree is struck by lightning.");
-                        }
-                    });
-                    controller5_1.add(probL);                    
-                }
-                
-                //Create and add the controller panel
-                JPanel controller5_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                controller5.add(controller5_2); 
-                //Properties of the controller panel
-                {
-                    //Create and Add the Similarity Slider from 0-100
-                    probLScale = new JSlider(JSlider.HORIZONTAL,0, 100,0);
-                    probLScale.addChangeListener(new ChangeListener() {
-                        @Override
-                        public void stateChanged(ChangeEvent e) {
-                            //Set the probability
-                            int newProbability=((JSlider)(e.getSource())).getValue();
-                            myModel.setProbLightning(newProbability);
-                            //Change the label
-                            probL.setText("ProbLightning : "+myModel.probLightning+"%");
-                        }
-                    });
-                    controller5_2.add(probLScale);
-                }
-            }         
-            
-            //Create and Add the 6th row to controller panel - The lightning steps
-            JPanel controller6 = new JPanel();                
-            controller6.setLayout(new GridLayout(1,2));
-            controller.add(controller6);            
-            //Properties of 6th row
-            {
-                //Create and add the label and checkbox panel
-                final JPanel controller6_1=new JPanel(new FlowLayout(FlowLayout.LEFT));                     
-                final JPanel controller6_2=new JPanel(new FlowLayout(FlowLayout.CENTER));                
-                controller6.add(controller6_1);                          
-                controller6.add(controller6_2);
-                controller6_2.setVisible(false);
-                //Properties of the label panel
-                {                    
-                    //Add the checkbox
-                    lightningBox = new JCheckBox("Lightning step ");
-                    lightningBox.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            //If selected, the textfield for step will appear
-                            if(lightningBox.isSelected()){
-                                controller6_2.setVisible(true);
-                            }else{
-                                controller6_2.setVisible(false);
-                            }
-                        }
-                    });
-                    lightningBox.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Lightning step : Number of step that a tree needs to burn after hit by lightning. ");
-                        }
-                    });    
-                    controller6_1.add(lightningBox);
-                }                
-                //Property of the step textfield panel
-                {
-                    //Add the step textfield
-                    lightningStep = new JTextField("1");
-                    lightningStep.setPreferredSize(new Dimension(50, 25));
-                    lightningStep.setHorizontalAlignment(JTextField.CENTER);
-                    controller6_2.add(lightningStep);
-                    controller6_2.add(new JLabel("steps"));
-                }
-            }
-            
-            //Create and Add the 7th and 8th row to controller panel - The wind 
-            final JPanel controller7=new JPanel();            
-            final JPanel controller8=new JPanel();
-            controller7.setLayout(new GridLayout(1,2));    
-            controller8.setLayout(new GridLayout(1,4));            
-            controller8.setVisible(false);
-            controller.add(controller7);
-            controller.add(controller8);
-             //Properties of 7th row
-            {
-                //Create and add the label and wind level radiobox panel
-                final JPanel controller7_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
-                final JPanel controller7_2=new JPanel(new FlowLayout(FlowLayout.LEFT));
-                controller7_2.setLayout(new GridLayout(1,3));
-                controller7_2.setVisible(false);
-                controller7.add(controller7_1);
-                controller7.add(controller7_2);
-                {
-                    //Add the checkbox
-                    windBox = new JCheckBox("Wind");
-                    windBox.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            //If selected, 4 wind direction options will appear
-                            if(windBox.isSelected()){                               
-                                controller7_2.setVisible(true);
-                                controller8.setVisible(true);
-                                myModel.setWind("all", false);
-                            }else{
-                                controller7_2.setVisible(false);
-                                controller8.setVisible(false);
-                                myModel.setWind("all", true);
-                            }
-                        }
-                    });
-                    windBox.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Wind : Wind that control the direction of the fire.");
-                        }
-                    });    
-                    controller7_1.add(windBox);
-                }
-                
-                //Create panel for each wind level                
-                ButtonGroup windGroup = new ButtonGroup();
-                {    
-                    //Wind level 0
-                    JPanel controller7_2_1=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                    controller7_2.add(controller7_2_1);
-                    {
-                        wind0 = new JRadioButton("Level 0",true);
-                        wind0.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if(wind0.isSelected()){
-                                    myModel.setWindLevel(0);
-                                }
-                            }
-                        });
-                        wind0.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Level 0 : No wind(will only change the direction of fire).");
-                        }
-                    });
-                        windGroup.add(wind0);
-                        controller7_2_1.add(wind0);
-                    }
-                    
-                    //Wind level 1
-                    JPanel controller7_2_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                    controller7_2.add(controller7_2_2);
-                    {
-                        wind1 = new JRadioButton("Level 1",false);
-                        wind1.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if(wind1.isSelected()){
-                                    myModel.setWindLevel(1);
-                                }
-                            }
-                        });
-                        wind1.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Level 1 : Low level of wind.");
-                        }
-                    });
-                        windGroup.add(wind1);
-                        controller7_2_2.add(wind1);
-                    }
-                    
-                    //Wind level 2
-                    JPanel controller7_2_3=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                    controller7_2.add(controller7_2_3);
-                    {
-                        wind2 = new JRadioButton("Level 2",false);
-                        wind2.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if(wind2.isSelected()){
-                                    myModel.setWindLevel(2);
-                                }
-                            }
-                        });
-                        wind2.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Level 2 : High level of wind.");
-                        }
-                    });
-                        windGroup.add(wind2);
-                        controller7_2_3.add(wind2);
-                    }
-                }
-            }
-            //Property of 8th row
-            {
-                //Create and add the north wind panel
-                JPanel controller8_1=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                controller8.add(controller8_1);
-                {
-                    //Add the checkbox
-                    windBoxN = new JCheckBox("North");
-                    windBoxN.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if(windBoxN.isSelected()){
-                                myModel.setWind("north", true);
-                            }else{
-                                myModel.setWind("north", false);
-                            }
-                        }
-                    });  
-                    windBoxN.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Wind to the North.");
-                        }
-                    });   
-                    controller8_1.add(windBoxN);
-                }
-                
-                //Create and add the South wind panel
-                JPanel controller8_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                controller8.add(controller8_2);
-                {
-                    //Add the checkbox
-                    windBoxS = new JCheckBox("South");
-                    windBoxS.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                             if(windBoxS.isSelected()){
-                                myModel.setWind("south", true);
-                            }else{
-                                myModel.setWind("south", false);
-                            }
-                        }
-                    });   
-                    windBoxS.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Wind to the South.");
-                        }
-                    }); 
-                    controller8_2.add(windBoxS);
-                }
-                
-                //Create and add the West wind panel
-                JPanel controller8_3=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                controller8.add(controller8_3);
-                {
-                    //Add the checkbox
-                    windBoxW = new JCheckBox("West");
-                    windBoxW.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                             if(windBoxW.isSelected()){
-                                myModel.setWind("west", true);
-                            }else{
-                                myModel.setWind("west", false);
-                            }
-                        }
-                    });                     
-                    windBoxW.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Wind to the West.");
-                        }
-                    }); 
-                    controller8_3.add(windBoxW);
-                }
-                
-                 //Create and add the West wind panel
-                JPanel controller8_4=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                controller8.add(controller8_4);
-                {
-                    //Add checkbox
-                    windBoxE = new JCheckBox("East");
-                    windBoxE.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                             if(windBoxE.isSelected()){
-                                myModel.setWind("east", true);
-                            }else{
-                                myModel.setWind("east", false);
-                            }
-                        }
-                    }); 
-                    windBoxE.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            //Hover the mouse to see the description
-                            description.setText("Wind to the East.");
-                        }
-                    }); 
-                    controller8_4.add(windBoxE);
-                }
-            }            
-            
-            //Create and Add the 9th row to controller panel - The Size
-            JPanel controller9=new JPanel();
-            controller9.setLayout(new GridLayout(1,2));
-            controller.add(controller9);
-            //Properties of 9th row
-            {
-                //Create and add the label panel
-                JPanel controller9_1=new JPanel(new FlowLayout(FlowLayout.LEFT));
-                controller9.add(controller9_1);
                 {
                     //Add the name label
                     size=new JLabel("Size : "+myModel.width+"x"+myModel.height);
@@ -634,12 +310,12 @@ public class Controller extends JFrame {
                             description.setText("Size : Size of the forest (width x height).");
                         }
                     });
-                    controller9_1.add(size);
+                    controller5_1.add(size);
                 }
                 
                 //Create and add the controller panel
-                JPanel controller9_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
-                controller9.add(controller9_2);
+                JPanel controller5_2=new JPanel(new FlowLayout(FlowLayout.CENTER));
+                controller5.add(controller5_2);
                 //Properties of the controller panel
                 {
                     //Create and Add the Size Slider from 10x10 - 50x50
@@ -661,17 +337,17 @@ public class Controller extends JFrame {
                             }
                         }
                     });
-                    controller9_2.add(sizeScale);
+                    controller5_2.add(sizeScale);
                 }
             }
             
-            //Create and Add the 10th row to controller panel - Note
+            //Create and Add the 6th row to controller panel - Note
             JPanel note=new JPanel();
             note.setLayout(new GridLayout(1,1));
             note.add(new JLabel("*click reset button after change the setting."));              
             controller.add(note);
             
-            //Create and Add the 11th row to controller panel - The description
+            //Create and Add the 7th row to controller panel - The description
             JPanel desc=new JPanel();
             desc.setLayout(new GridLayout(1,1));
             desc.add(description);
