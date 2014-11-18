@@ -7,7 +7,7 @@ import javax.swing.*;
  * The view class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 1.0 2014.11.18
+ * @version V2.0 2014.11.16
  */
 public class View extends JPanel {
     Cell cell[][];
