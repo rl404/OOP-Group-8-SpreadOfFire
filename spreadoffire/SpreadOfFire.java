@@ -7,7 +7,7 @@ import javax.swing.JFrame;
  * The main class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 1.0 2014.11.18
+ * @version V2.0 2014.10.14
  */
 public class SpreadOfFire {
     
@@ -28,7 +28,7 @@ public class SpreadOfFire {
         System.out.println("Set the probability of a tree in a cell catching fire : (0-100) ");
         Scanner c = new Scanner(System.in);     int probC = c.nextInt();
         
-        Model grid = new Model(width,height,probC,0,100);     
+        Model grid = new Model(width,height,probC,0,100,0);     
         
         System.out.println("Initial grid");     grid.showGraph();
         
