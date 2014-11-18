@@ -7,14 +7,14 @@ import java.awt.Color;
  * The model class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.11.18
+ * @version 2014.11.17
  */
 public class Model {
     
     private Cell cell[][];
     private View observer;
     private boolean cellCheck[][],windN,windS,windW,windE;
-    public int width, height, probCatch, probBurning, probTree,probLighting,lightingStep,windLevel,step;
+    public int width, height, probCatch, probBurning, probTree,probLightning,lightningStep,windLevel,step;
 
     /**
      * Constructor create the grid
@@ -26,7 +26,7 @@ public class Model {
     /**
      * Constructor, create the field
      * @param width width of the array
-    * @param height height of the array
+     * @param height height of the array
      */
     public Model(int width, int height){
         this(width,height,50,0,100,0);
@@ -39,12 +39,12 @@ public class Model {
      * @param probC the probCatch
      * @param probB the probBurning
      * @param probT the probTree
-     * @param probL the probLighting
+     * @param probL the probLightning
      */
     public Model(int width, int height,int probC, int probB, int probT, int probL) {
         this.width = width;                 this.height = height;                       windN = true;      windS = true;
         this.probCatch = probC;       this.probBurning = probB;            windE = true;      windW = true;
-        this.probTree = probT;          this.probLighting = probL;            lightingStep = 1; windLevel=0;
+        this.probTree = probT;          this.probLightning = probL;            lightningStep = 1; windLevel=0;
         //Reset the field
         resetGrid();
     }    
@@ -75,10 +75,10 @@ public class Model {
         
     /**
      * Set the probability that the tree is struck by lightning
-     * @param probL the probLighting
+     * @param probL the probLightning
      */
-    public void setProbLighting(int probL) {
-        this.probLighting = probL;
+    public void setProbLightning(int probL) {
+        this.probLightning = probL;
     }
     
     /**
@@ -116,11 +116,11 @@ public class Model {
     }
     
      /**
-     * set the number of step of lighting to burn a tree
+     * set the number of step of lightning to burn a tree
      * @param s number of step
      */
-    public void setLightingStep(int s){
-        this.lightingStep=s;
+    public void setLightningStep(int s){
+        this.lightningStep=s;
     }
     
     /**
@@ -264,29 +264,29 @@ public class Model {
                     cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;
                     
                     //Spread to the next tree
-                    if(windN && get(x-2,y) == Cell.GREEN && random(probCatch)==true)
-                        cell[x-2][y].set(Cell.RED); cellCheck[x-2][y] = true;
+                    if(windN && get(x-3,y) == Cell.GREEN && random(probCatch)==true)
+                        cell[x-3][y].set(Cell.RED); cellCheck[x-3][y] = true;
             }
             if(s.equals("south") && !windN && get(x+1,y) == Cell.GREEN && random(probCatch)==true){  
                     cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true; 
                     
                     //Spread to the next tree
-                    if(windS && get(x+2,y) == Cell.GREEN && random(probCatch)==true)
-                        cell[x+2][y].set(Cell.RED); cellCheck[x+2][y] = true;
+                    if(windS && get(x+3,y) == Cell.GREEN && random(probCatch)==true)
+                        cell[x+3][y].set(Cell.RED); cellCheck[x+3][y] = true;
             }
             if(s.equals("west") && !windE && get(x,y-1) == Cell.GREEN && random(probCatch)==true){
                     cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;    
                     
                     //Spread to the next tree
-                    if(windW && get(x,y-2) == Cell.GREEN && random(probCatch)==true)
-                        cell[x][y-2].set(Cell.RED); cellCheck[x][y-2] = true;
+                    if(windW && get(x,y-3) == Cell.GREEN && random(probCatch)==true)
+                        cell[x][y-3].set(Cell.RED); cellCheck[x][y-3] = true;
             }
             if(s.equals("east") && !windW && get(x,y+1) == Cell.GREEN && random(probCatch)==true){
                     cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;   
                     
                     //Spread to the next tree
-                    if(windE && get(x,y+2) == Cell.GREEN && random(probCatch)==true)
-                        cell[x][y+2].set(Cell.RED); cellCheck[x][y+2] = true;
+                    if(windE && get(x,y+3) == Cell.GREEN && random(probCatch)==true)
+                        cell[x][y+3].set(Cell.RED); cellCheck[x][y+3] = true;
             } 
         }
         update();   
@@ -307,18 +307,18 @@ public class Model {
         for(int i = 0; i < cell.length-1; i++){
             for(int j=0; j<cell[0].length-1; j++){  
                 
-                //If found lighting tree and probCatch is true
+                //If found lightning tree and probCatch is true
                 if(get(i,j) == Cell.BLUE && random(probCatch)){
                     
-                    //If current step is the step when the lighting tree burn
-                    if(cell[i][j].getLightingStep()==0){
+                    //If current step is the step when the lightning tree burn
+                    if(cell[i][j].getLightningStep()==0){
                         
                         //Burn the tree
                         cell[i][j].set(Cell.RED);
                         
-                    //Else decrease the lighting step
+                    //Else decrease the lightning step
                     }else{
-                        cell[i][j].stepLighting();
+                        cell[i][j].stepLightning();
                     }
                     
                //If the probCatch is false                         
@@ -340,14 +340,14 @@ public class Model {
     }     
     
     /**
-     * Start the lighting to hit at random tree
+     * Start the lightning to hit at random tree
      */
-    public void lighting(){        
+    public void lightning(){        
         int x = (int)(Math.random()*cell.length);
         int y = (int)(Math.random()*cell[0].length);
-        if(random(probLighting) && get(x,y) == Cell.GREEN){
+        if(random(probLightning) && get(x,y) == Cell.GREEN){
             cell[x][y].set(Cell.BLUE); 
-            cell[x][y].setLightingStep(lightingStep);
+            cell[x][y].setLightningStep(lightningStep);
         }
     }
         
@@ -358,7 +358,7 @@ public class Model {
     public boolean finish(){
         for(int i=0;i<cell.length;i++){
             for(int j=0;j<cell[0].length;j++){
-                if(get(i,j) == Cell.RED || get(i,j) ==Cell.BLUE)
+                if(get(i,j) == Cell.RED)
                     return false;
             }
         } return true;

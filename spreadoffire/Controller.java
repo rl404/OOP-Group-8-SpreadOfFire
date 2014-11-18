@@ -10,20 +10,20 @@ import javax.swing.event.ChangeListener;
  * The controller class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.11.18
+ * @version 2014.11.17
  */
 public class Controller extends JFrame {
     Model myModel;
     View myView;
     Thread startThread;
-    JCheckBox windBox,windBoxN,windBoxS,windBoxW,windBoxE,lightingBox;
+    JCheckBox windBox,windBoxN,windBoxS,windBoxW,windBoxE,lightningBox;
     JRadioButton wind0,wind1,wind2;
-    ButtonGroup windGroupLevel,windGroupNSWE;
     JButton startButton,stopButton,resetButton,moveButton;
     JLabel probC,probT,probB,probL,ratio,empty,size,delay,step,note;
     JLabel description = new JLabel("Hover the mouse to see the description.");
     JSlider probCScale,probTScale,probBScale,probLScale,sizeScale;
-    JTextField lightingStep;
+    JTabbedPane settingTab;
+    JTextField lightningStep;
 
     /**
      * Create the GUI of project
@@ -62,7 +62,8 @@ public class Controller extends JFrame {
             JPanel controller1=new JPanel();
             controller.add(controller1);
             //Properties of 1st row
-            {                    
+            {        
+            
                 //Create and Add the moveButton
                 startButton=new JButton("Move");
                 startButton.addActionListener(new ActionListener(){
@@ -72,12 +73,10 @@ public class Controller extends JFrame {
                         if(startThread==null||!startThread.isAlive()){
                             startThread=new Thread() {  
                                 public void run() { 
-                                    if(!myModel.finish()){
-                                        myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));                                    
-                                        myModel.lighting();
-                                        myModel.checkBurn();
-                                        myModel.resetCheck();
-                                    }
+                                    myModel.setLightningStep(Integer.parseInt(lightningStep.getText()));                                    
+                                    myModel.lightning();
+                                    myModel.checkBurn();
+                                    myModel.resetCheck();
                                 }  
                             };
                             startThread.start();
@@ -103,8 +102,8 @@ public class Controller extends JFrame {
                             startThread=new Thread() {  
                                 public void run() { 
                                     while(!myModel.finish()){                                        
-                                        myModel.setLightingStep(Integer.parseInt(lightingStep.getText()));                                        
-                                        myModel.lighting();
+                                        myModel.setLightningStep(Integer.parseInt(lightningStep.getText()));                                        
+                                        myModel.lightning();
                                         myModel.checkBurn();
                                         myModel.resetCheck();
                                     }
@@ -132,6 +131,7 @@ public class Controller extends JFrame {
                         if(startThread!=null&&startThread.isAlive()){
                             startThread.stop();
                         }
+
                     }
                 });                
                 stopButton.addMouseListener(new MouseAdapter() {
@@ -299,7 +299,7 @@ public class Controller extends JFrame {
                 }
             }      
             
-             //Create and Add the 5th row to controller panel - The probLighting
+             //Create and Add the 5th row to controller panel - The probLightning
             JPanel controller5=new JPanel();
             controller5.setLayout(new GridLayout(1,2));
             controller.add(controller5);
@@ -311,12 +311,12 @@ public class Controller extends JFrame {
                 //Properties of the label panel
                 {                
                     //Add the name label
-                    probL =new JLabel("ProbLighting : "+myModel.probLighting+"%");
+                    probL =new JLabel("ProbLightning : "+myModel.probLightning+"%");
                     probL.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             //Hover the mouse to see the description
-                            description.setText("ProbLighting : The probability that the tree is struck by lightning.");
+                            description.setText("ProbLightning : The probability that the tree is struck by lightning.");
                         }
                     });
                     controller5_1.add(probL);                    
@@ -334,16 +334,16 @@ public class Controller extends JFrame {
                         public void stateChanged(ChangeEvent e) {
                             //Set the probability
                             int newProbability=((JSlider)(e.getSource())).getValue();
-                            myModel.setProbLighting(newProbability);
+                            myModel.setProbLightning(newProbability);
                             //Change the label
-                            probL.setText("ProbLighting : "+myModel.probLighting+"%");
+                            probL.setText("ProbLightning : "+myModel.probLightning+"%");
                         }
                     });
                     controller5_2.add(probLScale);
                 }
             }         
             
-            //Create and Add the 6th row to controller panel - The lighting steps
+            //Create and Add the 6th row to controller panel - The lightning steps
             JPanel controller6 = new JPanel();                
             controller6.setLayout(new GridLayout(1,2));
             controller.add(controller6);            
@@ -358,35 +358,34 @@ public class Controller extends JFrame {
                 //Properties of the label panel
                 {                    
                     //Add the checkbox
-                    lightingBox = new JCheckBox("Lighting step ");
-                    lightingBox.addActionListener(new ActionListener() {
+                    lightningBox = new JCheckBox("Lightning step ");
+                    lightningBox.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //If selected, the textfield for step will appear
-                            if(lightingBox.isSelected()){
+                            if(lightningBox.isSelected()){
                                 controller6_2.setVisible(true);
                             }else{
-                                myModel.setLightingStep(1);
                                 controller6_2.setVisible(false);
                             }
                         }
                     });
-                    lightingBox.addMouseListener(new MouseAdapter() {
+                    lightningBox.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             //Hover the mouse to see the description
-                            description.setText("Lighting step : Number of step that a tree needs to burn after hit by lighting. ");
+                            description.setText("Lightning step : Number of step that a tree needs to burn after hit by lightning. ");
                         }
                     });    
-                    controller6_1.add(lightingBox);
+                    controller6_1.add(lightningBox);
                 }                
                 //Property of the step textfield panel
                 {
                     //Add the step textfield
-                    lightingStep = new JTextField("1");
-                    lightingStep.setPreferredSize(new Dimension(50, 25));
-                    lightingStep.setHorizontalAlignment(JTextField.CENTER);
-                    controller6_2.add(lightingStep);
+                    lightningStep = new JTextField("1");
+                    lightningStep.setPreferredSize(new Dimension(50, 25));
+                    lightningStep.setHorizontalAlignment(JTextField.CENTER);
+                    controller6_2.add(lightningStep);
                     controller6_2.add(new JLabel("steps"));
                 }
             }
@@ -422,9 +421,7 @@ public class Controller extends JFrame {
                             }else{
                                 controller7_2.setVisible(false);
                                 controller8.setVisible(false);
-                                myModel.setWind("all", true);                                
-                                myModel.setWindLevel(0);
-                                windGroupNSWE.clearSelection();
+                                myModel.setWind("all", true);
                             }
                         }
                     });
@@ -437,11 +434,9 @@ public class Controller extends JFrame {
                     });    
                     controller7_1.add(windBox);
                 }
-                //Create buttongroup                
-                windGroupLevel = new ButtonGroup();
-                windGroupNSWE = new ButtonGroup();                
                 
-                //Create panel for each wind level    
+                //Create panel for each wind level                
+                ButtonGroup windGroup = new ButtonGroup();
                 {    
                     //Wind level 0
                     JPanel controller7_2_1=new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -460,10 +455,10 @@ public class Controller extends JFrame {
                         @Override
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             //Hover the mouse to see the description
-                            description.setText("Level 0 : No wind(will only change the direction of spread of fire).");
+                            description.setText("Level 0 : No wind(will only change the direction of fire).");
                         }
                     });
-                        windGroupLevel.add(wind0);
+                        windGroup.add(wind0);
                         controller7_2_1.add(wind0);
                     }
                     
@@ -487,7 +482,7 @@ public class Controller extends JFrame {
                             description.setText("Level 1 : Low level of wind.");
                         }
                     });
-                        windGroupLevel.add(wind1);
+                        windGroup.add(wind1);
                         controller7_2_2.add(wind1);
                     }
                     
@@ -511,24 +506,23 @@ public class Controller extends JFrame {
                             description.setText("Level 2 : High level of wind.");
                         }
                     });
-                        windGroupLevel.add(wind2);
+                        windGroup.add(wind2);
                         controller7_2_3.add(wind2);
                     }
                 }
             }
             //Property of 8th row
-            {            
+            {
                 //Create and add the north wind panel
                 JPanel controller8_1=new JPanel(new FlowLayout(FlowLayout.CENTER));
                 controller8.add(controller8_1);
                 {
                     //Add the checkbox
-                    windBoxN = new JCheckBox("North",false);
+                    windBoxN = new JCheckBox("North");
                     windBoxN.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(windBoxN.isSelected()){
-                                myModel.setWind("all", false);
                                 myModel.setWind("north", true);
                             }else{
                                 myModel.setWind("north", false);
@@ -541,8 +535,7 @@ public class Controller extends JFrame {
                             //Hover the mouse to see the description
                             description.setText("Wind to the North.");
                         }
-                    }); 
-                    windGroupNSWE.add(windBoxN);
+                    });   
                     controller8_1.add(windBoxN);
                 }
                 
@@ -551,12 +544,10 @@ public class Controller extends JFrame {
                 controller8.add(controller8_2);
                 {
                     //Add the checkbox
-                    windBoxS = new JCheckBox("South",false);
+                    windBoxS = new JCheckBox("South");
                     windBoxS.addActionListener(new ActionListener() {
-                        @Override
                         public void actionPerformed(ActionEvent e) {
-                             if(windBoxS.isSelected()){                                 
-                                myModel.setWind("all", false);
+                             if(windBoxS.isSelected()){
                                 myModel.setWind("south", true);
                             }else{
                                 myModel.setWind("south", false);
@@ -570,7 +561,6 @@ public class Controller extends JFrame {
                             description.setText("Wind to the South.");
                         }
                     }); 
-                    windGroupNSWE.add(windBoxS);
                     controller8_2.add(windBoxS);
                 }
                 
@@ -579,12 +569,10 @@ public class Controller extends JFrame {
                 controller8.add(controller8_3);
                 {
                     //Add the checkbox
-                    windBoxW = new JCheckBox("West",false);
+                    windBoxW = new JCheckBox("West");
                     windBoxW.addActionListener(new ActionListener() {
-                        @Override
                         public void actionPerformed(ActionEvent e) {
-                             if(windBoxW.isSelected()){                                 
-                                myModel.setWind("all", false);
+                             if(windBoxW.isSelected()){
                                 myModel.setWind("west", true);
                             }else{
                                 myModel.setWind("west", false);
@@ -598,7 +586,6 @@ public class Controller extends JFrame {
                             description.setText("Wind to the West.");
                         }
                     }); 
-                    windGroupNSWE.add(windBoxW);
                     controller8_3.add(windBoxW);
                 }
                 
@@ -607,12 +594,10 @@ public class Controller extends JFrame {
                 controller8.add(controller8_4);
                 {
                     //Add checkbox
-                    windBoxE = new JCheckBox("East",false);
+                    windBoxE = new JCheckBox("East");
                     windBoxE.addActionListener(new ActionListener() {
-                        @Override
                         public void actionPerformed(ActionEvent e) {
                              if(windBoxE.isSelected()){
-                                 myModel.setWind("all", false);
                                 myModel.setWind("east", true);
                             }else{
                                 myModel.setWind("east", false);
@@ -626,7 +611,6 @@ public class Controller extends JFrame {
                             description.setText("Wind to the East.");
                         }
                     }); 
-                    windGroupNSWE.add(windBoxE);
                     controller8_4.add(windBoxE);
                 }
             }            

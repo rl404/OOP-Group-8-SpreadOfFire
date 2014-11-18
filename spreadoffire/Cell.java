@@ -11,7 +11,7 @@ import java.awt.Color;
 
 public class Cell {
     public static final int BLUE=3,GREEN=2,RED=1,YELLOW=0;
-    private int color,lightingStep;
+    private int color,lightningStep;
 
     /**
      * Constructor - create the empty cell
@@ -53,26 +53,26 @@ public class Cell {
     }   
     
     /**
-     * Set the lighting step
+     * Set the lightning step
      * @param s 
      */
-    public void setLightingStep(int s){
-        this.lightingStep=s;
+    public void setLightningStep(int s){
+        this.lightningStep=s;
     }
     
     /**
-     * Decrease the lighting step
+     * Decrease the lightning step
      */
-    public void stepLighting(){
-        this.lightingStep--;
+    public void stepLightning(){
+        this.lightningStep--;
     }
     
     /**
-     * Get the current lighting step
-     * @return lightingStep
+     * Get the current lightning step
+     * @return lightningStep
      */
-    public int getLightingStep(){
-        return lightingStep;
+    public int getLightningStep(){
+        return lightningStep;
     }
     
     /**
