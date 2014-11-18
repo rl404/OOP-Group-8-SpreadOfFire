@@ -18,11 +18,11 @@ public class Controller extends JFrame {
     Thread startThread;
     JCheckBox windBox,windBoxN,windBoxS,windBoxW,windBoxE,lightingBox;
     JRadioButton wind0,wind1,wind2;
+    ButtonGroup windGroupLevel,windGroupNSWE;
     JButton startButton,stopButton,resetButton,moveButton;
     JLabel probC,probT,probB,probL,ratio,empty,size,delay,step,note;
     JLabel description = new JLabel("Hover the mouse to see the description.");
     JSlider probCScale,probTScale,probBScale,probLScale,sizeScale;
-    JTabbedPane settingTab;
     JTextField lightingStep;
 
     /**
@@ -422,8 +422,9 @@ public class Controller extends JFrame {
                             }else{
                                 controller7_2.setVisible(false);
                                 controller8.setVisible(false);
-                                myModel.setWind("all", true);
+                                myModel.setWind("all", true);                                
                                 myModel.setWindLevel(0);
+                                windGroupNSWE.clearSelection();
                             }
                         }
                     });
@@ -436,9 +437,11 @@ public class Controller extends JFrame {
                     });    
                     controller7_1.add(windBox);
                 }
+                //Create buttongroup                
+                windGroupLevel = new ButtonGroup();
+                windGroupNSWE = new ButtonGroup();                
                 
-                //Create panel for each wind level                
-                ButtonGroup windGroup = new ButtonGroup();
+                //Create panel for each wind level    
                 {    
                     //Wind level 0
                     JPanel controller7_2_1=new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -460,7 +463,7 @@ public class Controller extends JFrame {
                             description.setText("Level 0 : No wind(will only change the direction of spread of fire).");
                         }
                     });
-                        windGroup.add(wind0);
+                        windGroupLevel.add(wind0);
                         controller7_2_1.add(wind0);
                     }
                     
@@ -484,7 +487,7 @@ public class Controller extends JFrame {
                             description.setText("Level 1 : Low level of wind.");
                         }
                     });
-                        windGroup.add(wind1);
+                        windGroupLevel.add(wind1);
                         controller7_2_2.add(wind1);
                     }
                     
@@ -508,25 +511,24 @@ public class Controller extends JFrame {
                             description.setText("Level 2 : High level of wind.");
                         }
                     });
-                        windGroup.add(wind2);
+                        windGroupLevel.add(wind2);
                         controller7_2_3.add(wind2);
                     }
                 }
             }
             //Property of 8th row
-            {
+            {            
                 //Create and add the north wind panel
                 JPanel controller8_1=new JPanel(new FlowLayout(FlowLayout.CENTER));
                 controller8.add(controller8_1);
-                ButtonGroup windGroupNS = new ButtonGroup();
-                ButtonGroup windGroupWE = new ButtonGroup();
                 {
                     //Add the checkbox
-                    windBoxN = new JCheckBox("North");
+                    windBoxN = new JCheckBox("North",false);
                     windBoxN.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(windBoxN.isSelected()){
+                                myModel.setWind("all", false);
                                 myModel.setWind("north", true);
                             }else{
                                 myModel.setWind("north", false);
@@ -539,8 +541,8 @@ public class Controller extends JFrame {
                             //Hover the mouse to see the description
                             description.setText("Wind to the North.");
                         }
-                    });  
-                    windGroupNS.add(windBoxN);
+                    }); 
+                    windGroupNSWE.add(windBoxN);
                     controller8_1.add(windBoxN);
                 }
                 
@@ -549,10 +551,12 @@ public class Controller extends JFrame {
                 controller8.add(controller8_2);
                 {
                     //Add the checkbox
-                    windBoxS = new JCheckBox("South");
+                    windBoxS = new JCheckBox("South",false);
                     windBoxS.addActionListener(new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
-                             if(windBoxS.isSelected()){
+                             if(windBoxS.isSelected()){                                 
+                                myModel.setWind("all", false);
                                 myModel.setWind("south", true);
                             }else{
                                 myModel.setWind("south", false);
@@ -566,7 +570,7 @@ public class Controller extends JFrame {
                             description.setText("Wind to the South.");
                         }
                     }); 
-                    windGroupNS.add(windBoxS);
+                    windGroupNSWE.add(windBoxS);
                     controller8_2.add(windBoxS);
                 }
                 
@@ -575,10 +579,12 @@ public class Controller extends JFrame {
                 controller8.add(controller8_3);
                 {
                     //Add the checkbox
-                    windBoxW = new JCheckBox("West");
+                    windBoxW = new JCheckBox("West",false);
                     windBoxW.addActionListener(new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
-                             if(windBoxW.isSelected()){
+                             if(windBoxW.isSelected()){                                 
+                                myModel.setWind("all", false);
                                 myModel.setWind("west", true);
                             }else{
                                 myModel.setWind("west", false);
@@ -592,7 +598,7 @@ public class Controller extends JFrame {
                             description.setText("Wind to the West.");
                         }
                     }); 
-                    windGroupWE.add(windBoxW);
+                    windGroupNSWE.add(windBoxW);
                     controller8_3.add(windBoxW);
                 }
                 
@@ -601,10 +607,12 @@ public class Controller extends JFrame {
                 controller8.add(controller8_4);
                 {
                     //Add checkbox
-                    windBoxE = new JCheckBox("East");
+                    windBoxE = new JCheckBox("East",false);
                     windBoxE.addActionListener(new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                              if(windBoxE.isSelected()){
+                                 myModel.setWind("all", false);
                                 myModel.setWind("east", true);
                             }else{
                                 myModel.setWind("east", false);
@@ -618,7 +626,7 @@ public class Controller extends JFrame {
                             description.setText("Wind to the East.");
                         }
                     }); 
-                    windGroupWE.add(windBoxE);
+                    windGroupNSWE.add(windBoxE);
                     controller8_4.add(windBoxE);
                 }
             }            
