@@ -10,7 +10,7 @@ import javax.swing.event.ChangeListener;
  * The controller class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.11.17
+ * @version 2014.11.18
  */
 public class Controller extends JFrame {
     Model myModel;
@@ -62,8 +62,7 @@ public class Controller extends JFrame {
             JPanel controller1=new JPanel();
             controller.add(controller1);
             //Properties of 1st row
-            {        
-            
+            {                    
                 //Create and Add the moveButton
                 startButton=new JButton("Move");
                 startButton.addActionListener(new ActionListener(){
@@ -133,7 +132,6 @@ public class Controller extends JFrame {
                         if(startThread!=null&&startThread.isAlive()){
                             startThread.stop();
                         }
-
                     }
                 });                
                 stopButton.addMouseListener(new MouseAdapter() {
@@ -520,6 +518,8 @@ public class Controller extends JFrame {
                 //Create and add the north wind panel
                 JPanel controller8_1=new JPanel(new FlowLayout(FlowLayout.CENTER));
                 controller8.add(controller8_1);
+                ButtonGroup windGroupNS = new ButtonGroup();
+                ButtonGroup windGroupWE = new ButtonGroup();
                 {
                     //Add the checkbox
                     windBoxN = new JCheckBox("North");
@@ -539,7 +539,8 @@ public class Controller extends JFrame {
                             //Hover the mouse to see the description
                             description.setText("Wind to the North.");
                         }
-                    });   
+                    });  
+                    windGroupNS.add(windBoxN);
                     controller8_1.add(windBoxN);
                 }
                 
@@ -565,6 +566,7 @@ public class Controller extends JFrame {
                             description.setText("Wind to the South.");
                         }
                     }); 
+                    windGroupNS.add(windBoxS);
                     controller8_2.add(windBoxS);
                 }
                 
@@ -590,6 +592,7 @@ public class Controller extends JFrame {
                             description.setText("Wind to the West.");
                         }
                     }); 
+                    windGroupWE.add(windBoxW);
                     controller8_3.add(windBoxW);
                 }
                 
@@ -615,6 +618,7 @@ public class Controller extends JFrame {
                             description.setText("Wind to the East.");
                         }
                     }); 
+                    windGroupWE.add(windBoxE);
                     controller8_4.add(windBoxE);
                 }
             }            
