@@ -7,7 +7,7 @@ import java.awt.Color;
  * The model class of project from MVC pattern
  * 
  * @author OOPgroup8
- * @version 2014.11.17
+ * @version 2014.11.18
  */
 public class Model {
     
@@ -26,7 +26,7 @@ public class Model {
     /**
      * Constructor, create the field
      * @param width width of the array
-     * @param height height of the array
+    * @param height height of the array
      */
     public Model(int width, int height){
         this(width,height,50,0,100,0);
@@ -264,29 +264,29 @@ public class Model {
                     cell[x-1][y].set(Cell.RED); cellCheck[x-1][y] = true;
                     
                     //Spread to the next tree
-                    if(windN && get(x-3,y) == Cell.GREEN && random(probCatch)==true)
-                        cell[x-3][y].set(Cell.RED); cellCheck[x-3][y] = true;
+                    if(windN && get(x-2,y) == Cell.GREEN && random(probCatch)==true)
+                        cell[x-2][y].set(Cell.RED); cellCheck[x-2][y] = true;
             }
             if(s.equals("south") && !windN && get(x+1,y) == Cell.GREEN && random(probCatch)==true){  
                     cell[x+1][y].set(Cell.RED); cellCheck[x+1][y] = true; 
                     
                     //Spread to the next tree
-                    if(windS && get(x+3,y) == Cell.GREEN && random(probCatch)==true)
-                        cell[x+3][y].set(Cell.RED); cellCheck[x+3][y] = true;
+                    if(windS && get(x+2,y) == Cell.GREEN && random(probCatch)==true)
+                        cell[x+2][y].set(Cell.RED); cellCheck[x+2][y] = true;
             }
             if(s.equals("west") && !windE && get(x,y-1) == Cell.GREEN && random(probCatch)==true){
                     cell[x][y-1].set(Cell.RED); cellCheck[x][y-1] = true;    
                     
                     //Spread to the next tree
-                    if(windW && get(x,y-3) == Cell.GREEN && random(probCatch)==true)
-                        cell[x][y-3].set(Cell.RED); cellCheck[x][y-3] = true;
+                    if(windW && get(x,y-2) == Cell.GREEN && random(probCatch)==true)
+                        cell[x][y-2].set(Cell.RED); cellCheck[x][y-2] = true;
             }
             if(s.equals("east") && !windW && get(x,y+1) == Cell.GREEN && random(probCatch)==true){
                     cell[x][y+1].set(Cell.RED); cellCheck[x][y+1] = true;   
                     
                     //Spread to the next tree
-                    if(windE && get(x,y+3) == Cell.GREEN && random(probCatch)==true)
-                        cell[x][y+3].set(Cell.RED); cellCheck[x][y+3] = true;
+                    if(windE && get(x,y+2) == Cell.GREEN && random(probCatch)==true)
+                        cell[x][y+2].set(Cell.RED); cellCheck[x][y+2] = true;
             } 
         }
         update();   
