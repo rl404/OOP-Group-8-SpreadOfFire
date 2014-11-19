@@ -352,8 +352,8 @@ public class Model {
     }
         
      /**
-     * Check if there is no burning finish anymore (no 2 anymore)
-     * @return true if there is still burning tree in the forest
+     * Check if there is no burning or lightning tree anymore
+     * @return true if there is still burning or lightning tree in the forest
      */
     public boolean finish(){
         for(int i=0;i<cell.length;i++){
