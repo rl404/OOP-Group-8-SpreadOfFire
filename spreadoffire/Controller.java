@@ -367,6 +367,7 @@ public class Controller extends JFrame {
                                 controller6_2.setVisible(true);
                             }else{
                                 myModel.setLightningStep(1);
+                                lightningStep.setText("1");
                                 controller6_2.setVisible(false);
                             }
                         }
